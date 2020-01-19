@@ -40,7 +40,7 @@ function gameLoop() {
     p.move();
 
     if (f % 2 == 0) {
-        theta = ((f * Math.PI * 2) / 64) + f / 20;
+        theta = ((f * Math.PI * 2) / 64) + f / 60;
         r = Math.sin(theta * 8) + 2;
     bullets.push(
         new Bullet(
