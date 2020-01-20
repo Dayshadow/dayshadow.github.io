@@ -20,9 +20,20 @@
         top: 50%;
         transform: translate(-50%, -50%);
     }
+    .hidden {
+        visibility: hidden;
+    }
+    #smallBullet {
+        width: 20px;
+        height: 15px;
+        
+    }
     </style>
 </head>
 <body>
+    <img src="./sprites/smallBullet.png" id="smallBullet" class="hidden" />
+
+    <script src="./sprites/ImageLoader.js"></script>
 
     <canvas id="canvas"></canvas>
     <script src="./utils.js"></script>

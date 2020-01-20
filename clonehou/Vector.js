@@ -14,4 +14,7 @@ class Vector {
         let angle = Math.atan2(this.y, this.x);
         return new Vector(Math.cos(angle), Math.sin(angle));
     }
+    toAngle() {
+        return Math.atan2(this.y, this.x);
+    }
 }

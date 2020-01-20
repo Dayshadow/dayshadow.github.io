@@ -5,17 +5,18 @@ class Bullet {
         switch (type) {
             case "small":
                 this.hitboxRadius = 6;
-                this.image = "smallBullet.png";
+                this.image = SMALLBULLET_IMG;
         }
     }
     update() {
         this.pos = this.pos.addVector(this.velocity);
     }
     draw() {
-        ctx.beginPath();
-        ctx.arc(this.pos.x, this.pos.y, this.hitboxRadius, 0, Math.PI * 2);
-        ctx.fillStyle = "#ff0000";
-        ctx.fill();
+        ctx.save();
+        ctx.translate(this.pos.x, this.pos.y);
+        ctx.rotate(this.velocity.toAngle());
+        ctx.drawImage(this.image, -this.image.width / 2, -this.image.height / 2);
+        ctx.restore();
     }
     
 }

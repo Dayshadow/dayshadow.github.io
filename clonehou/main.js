@@ -25,7 +25,7 @@ let bullets = [];
 let theta;
 let r;
 
-const p = new Player(new Vector(gw / 2, gh / 2));
+const p = new Player(new Vector(20, 20));
 
 let f = 0;
 function gameLoop() {
