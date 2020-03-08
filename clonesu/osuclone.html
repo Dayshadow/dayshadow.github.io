@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            height: 100%;
+            overflow: hidden;
+            background-size: cover;
+        }
+
+        canvas {
+            border: 1px solid black;
+            visibility: hidden;
+            position: absolute;
+        }
+
+        img {
+            visibility: hidden;
+        }
+        @font-face {
+            font-family: ubuntu;
+            src: url(./resources/Ubuntu-R.ttf);
+        }
+        button {
+            margin-left: 46%;
+        }
+        h1 {
+            font-family: ubuntu;
+            font-size: 56px;
+            color: rgb(0, 0, 0);
+            padding-top: 10%;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="game"></canvas>
+    <h1 id="title">
+        osu-clone
+    </h1>
+    <button onclick="initGame()">Start Game</button>
+
+    <img src="./resources/hit100.png" id="hit100">
+    <img src="./resources/hit50.png" id="hit50">
+    <img src="./resources/hitcircle.png" id="hitcircle">
+    <img src="./resources/hitcircleoverlay.png" id="hitcircleoverlay">
+
+
+
+    <script src="/osu-clone/ResourceLoader.js"></script>
+    <script src="/osu-clone/utils.js"></script>
+    <script src="/osu-clone/libs/bezier.js"></script>
+    <script src="/osu-clone/Particle.js"></script>
+    <script src="/osu-clone/AccuracyParticle.js"></script>
+    <script src="/osu-clone/osuCircle.js"></script>
+    <script src="/osu-clone/osuSlider.js"></script>
+    <script src="/osu-clone/ScoreParticle.js"></script>
+    <script src="/osu-clone/main.js"></script>
+
+</body>
+
+</html>
