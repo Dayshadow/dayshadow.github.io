@@ -2,7 +2,7 @@ let qt = require("./QuadTree.js");
 let diep = require("./Diep.js");
 
 let WebSockerServer = require("ws").Server;
-let wss = new WebSockerServer({ port: 3100 })
+let wss = new WebSockerServer({ port: 3000 })
 let tanks = [];
 let objs = [];
 let activeConnections = [];

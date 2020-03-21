@@ -13,7 +13,7 @@ let looping = false;
 let sentTankData = false;
 function startGame() {
     initializeInputHandling();
-    let ws = new WebSocket("wss://24.63.238.100:3100"); // 24.63.238.100
+    let ws = new WebSocket("wss://24.63.238.100:3000"); // 24.63.238.100
     let c = document.getElementById("game");
     let ninput = document.getElementById("nicknameinput");
     let finput = document.getElementById("ftbinput");
