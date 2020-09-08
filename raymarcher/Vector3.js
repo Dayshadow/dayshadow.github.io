@@ -4,7 +4,7 @@ class Vector3 {
         this.y = y;
         this.z = z;
     }
-[]
+
     addVector(v2) { // Add another Vector3
         return new Vector3(this.x + v2.x, this.y + v2.y, this.z + v2.z);
     }
