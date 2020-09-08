@@ -9,6 +9,10 @@ function dist(x1, y1, x2, y2) {
     return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 };
 
+function length(v) {
+    return Math.sqrt(Math.pow(v.x, 2) + Math.pow(v.y, 2) + Math.pow(v.z, 2));
+}
+
 let mouse = {
     x: 1,
     y: 1
