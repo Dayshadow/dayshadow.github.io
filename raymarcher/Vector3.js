@@ -15,10 +15,10 @@ class Vector3 {
         return new Vector3(Math.abs(this.x), Math.abs(this.y), Math.abs(this.z));
     }
     min(val) {
-        return Vector3(Math.min(this.x, val), Math.min(this.y, val), Math.min(this.z, val));
+        return new Vector3(Math.min(this.x, val), Math.min(this.y, val), Math.min(this.z, val));
     }
     max(val) {
-        return Vector3(Math.max(this.x, val), Math.max(this.y, val), Math.max(this.z, val));
+        return new Vector3(Math.max(this.x, val), Math.max(this.y, val), Math.max(this.z, val));
     }
     multiplyBy(mult) { // Multiply by some constant
         return new Vector3(this.x * mult, this.y * mult, this.z * mult);
