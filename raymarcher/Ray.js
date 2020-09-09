@@ -11,7 +11,7 @@ class Ray {
         let lowestDist = Infinity;
         let count = 0
         while (this.stepSize > this.minStep) {
-            if (this.stepSize > this.maxStep) return;
+            if (this.stepSize > this.maxStep) return false;
 
             for (let obj of world.objs) {
                 let dist = obj.dist(this.v.addVector(this.loc))
@@ -19,6 +19,7 @@ class Ray {
                     lowestDist = dist;
                 }
             }
+            count++
             this.stepSize = lowestDist;
             lowestDist = Infinity;
             if (this.circleRendering) {
@@ -28,6 +29,6 @@ class Ray {
             }
             this.v = this.v.march(this.stepSize);
         }
-        return true;
+        return count
     }
 }
