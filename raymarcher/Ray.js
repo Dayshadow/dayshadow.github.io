@@ -3,7 +3,7 @@ class Ray {
         this.v = v.normalize();
         this.loc = loc;
         this.stepSize = 91;
-        this.minStep = 0.8; // Increases AO quality and general shape accuracy
+        this.minStep = 0.1; // Increases AO quality and general shape accuracy
         this.maxStep = 500; // If the step size is ever over 1000 it registers as a miss
         this.circleRendering = false;
     }
@@ -14,7 +14,7 @@ class Ray {
             if (this.stepSize > this.maxStep) return false; // keeps it from getting stuck in a forever loop if it's too far
 
             for (let obj of world.objs) {
-                let dist = obj.dist(this.v.addVector(this.loc))
+                let dist = obj.dist(this.v.addVector(this.loc));
                 if (dist < lowestDist) {
                     lowestDist = dist;
                 }

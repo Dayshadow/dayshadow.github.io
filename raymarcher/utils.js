@@ -58,3 +58,6 @@ window.addEventListener('keypress', (e) => {
 window.addEventListener('keyup', function (e) {
     keys = keys.filter((x) => { return (x != e.key) });
 });
+
+const BOX_ID = 1;
+const SPHERE_ID = 2;

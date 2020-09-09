@@ -1,6 +1,6 @@
 const c = document.getElementById("canvas");
 const ctx = c.getContext("2d");
-let resDiv = 8.0; // Changes the denominator of the res
+let resDiv = 4.0; // Changes the denominator of the res
 c.width = cw = window.innerWidth / resDiv;
 c.height = ch = window.innerHeight / resDiv;
 
@@ -32,13 +32,12 @@ function mainLoop() {
     f += Math.PI / (180);
 
     camera.forward = new Vector3(0, 0, 0); // keeping camera pointing at zero
-    camera.origin = new Vector3(0, Math.cos(f) * 300, Math.sin(f) * 300) // some movement just cuz I wanted to see it in action
-    // kinda messed up cuz the upguide makes the camera occasionally flip
+    camera.origin = new Vector3(0, Math.abs(Math.cos(f) * 300), Math.abs(Math.sin(f) * 300)) // some movement just cuz I wanted to see it in action
     camera.recalculateFacing(); // for updating the camera's position after the previous changes to it's orientation variables
 
     ctx.clearRect(0, 0, cw, ch);
-    renderer.newFrame()
+    //renderer.newFrame()
 
     requestAnimationFrame(mainLoop);
 }
-mainLoop();
+setTimeout(()=>mainLoop(), 1000)

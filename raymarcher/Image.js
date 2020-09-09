@@ -21,4 +21,12 @@ class ImageManager {
     setImage() {
         ctx.putImageData(this.imageData, 0, 0);
     }
+    setData() {
+        this.imageData.data = data;
+    }
+    indexToPixel(index) {
+        let x = index % this.imageData.width;
+        let y = Math.floor(index / this.imageData.height);
+        return new Vector3(x, y, 0);
+    }
 }
