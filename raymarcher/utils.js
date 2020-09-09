@@ -41,8 +41,8 @@ function handleMouseUp(e) {
     }
 }
 const mouseMove = (event) => {
-    mouse.x = event.x
-    mouse.y = event.y
+    mouse.x = event.x / 2
+    mouse.y = event.y / 2
 };
 
 document.addEventListener('mousedown', handleMouseDown);

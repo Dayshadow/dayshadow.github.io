@@ -5,8 +5,15 @@ class Box {
     }
 
     dist(p) {
-        let q = (p.absolute()).subtractVector(this.b.addVector(this.loc));
-        return length(q.max(0)) + Math.min(Math.max(q.x, Math.max(q.y, q.z)), 0.0);
+        let q = p.subtractVector(this.loc).absolute().subtractVector(this.b)
+        return length(q.max(0)) + Math.min(Math.max(q.x, Math.max(q.y,q.z)),0);
+
+        //vec3 q = abs(p) - b;
+    /*
+    return length( max(q,0) ) +
+    min(max(q.x,max(q.y,q.z)),0.0);
+
+         */
     }
     draw2d() {
         ctx.beginPath()
