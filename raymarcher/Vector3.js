@@ -24,9 +24,13 @@ class Vector3 {
         return new Vector3(this.x * mult, this.y * mult, this.z * mult);
     }
     normalize() { // Returns a new scaled vector of length 1
-        if (this.x == 0 && this.y == 0) return this;
-        let angle = Math.atan2(this.y, this.x);
-        return new Vector3(Math.cos(angle), Math.sin(angle));
+        let len = length(this);
+        return new Vector3(this.x / len, this.y / len, this.z / len);
+    }
+    march(val) { // Increases the length in the vector's current direction by a fixed amount
+        let len = length(this);
+        let nm = new Vector3(this.x / len, this.y / len, this.z / len); // I put the normalize code here so It doesn't have to calculate length twice
+        return nm.multiplyBy(len + val)
     }
     toAngle() { // Converts the vector to an angle in radians
         return Math.atan2(this.y, this.x);

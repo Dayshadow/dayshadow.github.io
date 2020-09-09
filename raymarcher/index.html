@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,29 +8,35 @@
     <title>Raymarching test</title>
 
     <style>
-    body, html {
-        background-color: black;
-        margin:0;
-        overflow: hidden;
-    }
-    canvas {
-        height: 100%;
-        width: 100%;
-        position: absolute;
-    }
+        body,
+        html {
+            margin: 0;
+            overflow: hidden;
+        }
 
+        canvas {
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            border: 3px solid black;
+        }
     </style>
 </head>
+
 <body>
 
     <canvas id="canvas"></canvas>
-    
+
     <script src="./utils.js"></script>
     <script src="./Ray.js"></script>
+    <script src="./World.js"></script>
     <script src="./Renderer.js"></script>
+    <script src="./Renderer2d.js"></script>
     <script src="./Vector3.js"></script>
     <script src="./BoxPrimitive.js"></script>
+    <script src="./SpherePrimitive.js"></script>
     <script src="./raymarcher.js"></script>
-    
+
 </body>
+
 </html>

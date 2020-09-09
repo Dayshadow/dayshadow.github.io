@@ -3,6 +3,6 @@ class Renderer {
 
     }
     newFrame() {
-        
+
     }
 }
