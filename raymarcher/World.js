@@ -3,6 +3,6 @@ class World {
         this.objs = [];
     }
     addObject(obj) {
-        this.objs.push(obj);
+        this.objs.push(obj); // not that complicated I know
     }
 }

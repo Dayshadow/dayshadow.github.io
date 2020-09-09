@@ -10,7 +10,7 @@ function dist(x1, y1, x2, y2) {
 };
 
 function length(v) {
-    return Math.sqrt(Math.pow(v.x, 2) + Math.pow(v.y, 2) + Math.pow(v.z, 2));
+    return Math.sqrt(Math.pow(v.x, 2) + Math.pow(v.y, 2) + Math.pow(v.z, 2)); // very important function, and quite laggy. might optimize idk
 }
 
 let mouse = {

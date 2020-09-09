@@ -6,17 +6,17 @@ class ImageManager {
         this.imageData = ctx.getImageData(0, 0, cw, ch);
     }
     setPixel(x, y, r, g, b, a) {
-        let pixelNum = undefined;
-        if (x != 0) {
-            pixelNum = (y * this.imageData.width + x % this.imageData.width)
+        let pixelIndex = undefined;
+        if (x != 0) { // converts x and y coordinates into the pixel number
+            pixelIndex = ((y - 1) * this.imageData.width + x % this.imageData.width)
         } else {
-            pixelNum = y * this.imageData.width;
+            pixelIndex = y * this.imageData.width;
         }
-        pixelNum *= 4;
-        this.imageData.data[pixelNum + 0] = r
-        this.imageData.data[pixelNum + 1] = g
-        this.imageData.data[pixelNum + 2] = b
-        this.imageData.data[pixelNum + 3] = a;
+        pixelIndex *= 4; // moves the pixel index to the right spot in the imagedata array
+        this.imageData.data[pixelIndex + 0] = r
+        this.imageData.data[pixelIndex + 1] = g
+        this.imageData.data[pixelIndex + 2] = b
+        this.imageData.data[pixelIndex + 3] = a;
     }
     setImage() {
         ctx.putImageData(this.imageData, 0, 0);

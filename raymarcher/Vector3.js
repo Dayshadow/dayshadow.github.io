@@ -11,19 +11,19 @@ class Vector3 {
     subtractVector(v2) { // Subtract another Vector3
         return new Vector3(this.x - v2.x, this.y - v2.y, this.z - v2.z);
     }
-    add(val) {
+    add(val) { // simple constant add
         return new Vector3(this.x + val, this.y + val, this.z + val);
     }
-    subtract(val) {
+    subtract(val) { // you can probably figure it out
         return new Vector3(this.x - val, this.y - val, this.z - val);
     }
     absolute() { // absolute value of all components
         return new Vector3(Math.abs(this.x), Math.abs(this.y), Math.abs(this.z));
     }
-    min(val) {
+    min(val) { // returns the lowest of the 4 values x, y, z, and val
         return new Vector3(Math.min(this.x, val), Math.min(this.y, val), Math.min(this.z, val));
     }
-    max(val) {
+    max(val) { // returns the highest
         return new Vector3(Math.max(this.x, val), Math.max(this.y, val), Math.max(this.z, val));
     }
     multiply(mult) { // Multiply by some constant
