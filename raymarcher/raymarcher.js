@@ -1,6 +1,7 @@
 const c = document.getElementById("canvas");
 const ctx = c.getContext("2d");
-let resDiv = 8.0; // Changes the denominator of the res
+let resDiv = 2.0; // Changes the denominator of the res
+let rayDensity = 0.7;
 c.width = cw = window.innerWidth / resDiv;
 c.height = ch = window.innerHeight / resDiv;
 
