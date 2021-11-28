@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIBING</title>
+</head>
+<style>
+    html {
+        width: 100%;
+        height: 100%;
+    }
+
+    @keyframes shake-animation {
+        0% {
+            transform: translate(0, 0)
+        }
+
+        3% {
+            transform: translate(5px, 3px)
+        }
+
+        6% {
+            transform: translate(0, 0)
+        }
+
+        9% {
+            transform: translate(5px, -4px)
+        }
+
+        12% {
+            transform: translate(0, 0)
+        }
+
+        15% {
+            transform: translate(5px, 5px)
+        }
+
+        18% {
+            transform: translate(0, 0)
+        }
+
+        100% {
+            transform: translate(0, 0)
+        }
+    }
+
+    @keyframes flash {
+        0% {
+            background-color: rgb(37, 37, 37);
+            filter: brightness(3) blur(2px);
+        }
+        100% {
+            background-color: black;
+            filter: brightness(1) blur(0px);
+        }
+    }
+
+    @keyframes backgroundLoop {
+        from {
+            background-position: 0px 0px;
+        }
+
+        to {
+            background-position: 640px 512px;
+        }
+    }
+
+    @keyframes backgroundLoop2 {
+        from {
+            background-position: 0px 0px;
+        }
+
+        to {
+            background-position: 1280px 512px;
+        }
+    }
+
+    @keyframes moveUpLoop {
+        0% {
+            top: 0px;
+        }
+
+        25% {
+            top: -100px;
+            transform: rotate3d(1, 1, 1, 70deg);
+        }
+
+        50% {
+            top: 0px;
+            transform: rotate(0deg);
+        }
+
+        75% {
+            top: 100px;
+            transform: rotate3d(1, -1, 1, -70deg);
+        }
+
+        100% {
+            top: 0px;
+        }
+    }
+
+    body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        background-color: black;
+        color: white;
+        font-family: sans-serif;
+        background-image: url("stars.png");
+        background-size: 640px;
+        animation: backgroundLoop2 15s linear infinite, flash 1s ease infinite, shake-animation 1s ease infinite;
+    }
+
+    .containercontainer {
+        /* dont ask */
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    p {
+        font-size: 25px;
+        color: rgb(200, 200, 200);
+        margin: 0
+    }
+
+    h1 {
+        white-space: nowrap;
+        margin: 0
+    }
+
+    .container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-image: url("stars.png");
+        background-size: 640px;
+        animation: backgroundLoop 9s linear infinite -2s;
+    }
+
+    .letterUp {
+        flex: 1;
+        position: relative;
+        text-align: center;
+        font-size: 100px;
+        width: 50px;
+        animation-name: moveUpLoop;
+        animation-duration: 2s;
+        animation-iteration-count: infinite;
+    }
+
+    .letterDown {
+        flex: 1;
+        position: relative;
+        text-align: center;
+        font-size: 100px;
+        width: 50px;
+        animation-name: moveUpLoop;
+        animation-delay: -1s;
+        animation-duration: 2s;
+        animation-iteration-count: infinite;
+    }
+</style>
+
+<body>
+    <audio controls hidden loop autoplay>
+        <source src="Mode.mp3" type="audio/mp3">
+    </audio>
+
+    <div class="containercontainer">
+        <div class="container">
+            <div style="flex: 3"> </div>
+            <div class="letterUp">V</div>
+            <div class="letterDown">I</div>
+            <div class="letterUp">B</div>
+            <div class="letterDown">E</div>
+            <div class="letterUp">Z</div>
+            <div class="letterDown">O</div>
+            <div class="letterUp">N</div>
+            <div class="letterDown">E</div>
+            <div style="flex: 3"> </div>
+        </div>
+    </div>
+</body>
+
+</html>

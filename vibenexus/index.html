@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yay!</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <style>
+        .wrapper { /* plagerized rainbow bg code */
+            height: 100%;
+            width: 100%;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            position: absolute;
+            background: linear-gradient(124deg, #4b0a00, #690000, #332700, #494b00, #005c0f, #005155, #04003d, #2c0030, #220025);
+            background-size: 1800% 1800%;
+            animation: rainbow 18s ease infinite;
+        }
+
+        @keyframes rainbow {
+            0% {
+                background-position: 0% 82%
+            }
+
+            50% {
+                background-position: 100% 19%
+            }
+
+            100% {
+                background-position: 0% 82%
+            }
+        }
+
+        html {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            background-color: rgba(0, 0, 0, 0.61);
+            color: white;
+            font-family: sans-serif;
+        }
+
+        p {
+            font-size: 25px;
+            color: rgb(200, 200, 200);
+            margin: 0
+        }
+
+        h1 {
+            white-space: nowrap;
+            margin: 0
+        }
+
+        button {
+            align-self: center;
+            border-radius: 20px;
+            text-decoration: none;
+            border: 2px solid white;
+            font-size: 20px;
+            width: 80%;
+            padding: 0px;
+            background-color: rgb(188, 190, 223);
+            color: rgb(3, 2, 24);
+        }
+
+        button:hover {
+            background-color: rgb(113, 114, 128);
+            color: white;
+        }
+
+        button:focus {
+            background-color: rgb(113, 114, 128);
+            box-shadow: inset 0px 0px 15px 2px #FFFFFF;
+            color: white;
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mainBoxCentered {
+            text-align: center;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            width: 40%;
+            height: 60%;
+            background-color: rgba(20, 20, 20, 0.658);
+            border-radius: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+
+        <div class="container">
+            <div class="mainBoxCentered">
+                <h1 style="flex: 1">--The Vibe Nexus--</h1>
+                <p style="flex: 3">
+                    Beware: <br>
+                    Those who enter the vibe nexus are doomed to experience vibe. <br>
+                    Side affects of vibe include: involuntary head bobbing, increased happiness, death<br><br>
+                    You have been warned.
+                </p>
+                <button style="flex: 1" onclick="window.location.href = 'vibezone/'"><b>Press to enter the Vibe
+                        Zone</b></button>
+                <div style="flex: 1"></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
