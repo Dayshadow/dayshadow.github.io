@@ -72,7 +72,6 @@ function drawTetrimino(tetrimino, x, y, minoSize, ctx, centered = false) {
             if (tetrimino.data[row][column]) {
                 let newX = x + (column * minoSize) - (centered ? (tetrimino.data[0].length * minoSize) / 2 : 0);
                 let newY = y + (row * minoSize) - (centered ? (tetrimino.data.length * minoSize) / 2 - (minoSize / 2): 0);
-                console.log(x + (column * minoSize))
                 ctx.beginPath();
                 ctx.rect(newX, newY, minoSize, minoSize);
                 ctx.fill();
