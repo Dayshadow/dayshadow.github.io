@@ -12,7 +12,7 @@ let f = 0;
 function drawLoop() {
     f++;
     ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = rgb(247, 247, 237);
+    ctx.fillStyle = rgb(0, 0, 0);
     ctx.fillRect(0, 0, w, h);
 
     ctx.fillStyle = rgb(0, 0, 0);
