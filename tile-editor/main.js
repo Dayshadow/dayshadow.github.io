@@ -143,9 +143,6 @@ function handlePackedTileUpload(e) {
         // Reset the image variable
         packedTileImage = new Image();
 
-        if ((packedTileImage.width * packedTileImage.height) % (16 * 24) != 0) {
-            alert("Image does not have the correct aspect ratio, and is not a multiple of 16x24. Results inaccurate.");
-        }
         // image needs to load for a bit after setting the image url
         packedTileImage.addEventListener('load', onLoadPTImage);
         packedTileImage.src = e.target.result
@@ -155,6 +152,9 @@ function handlePackedTileUpload(e) {
 }
 
 const onLoadPTImage = () => {
+    if ((packedTileImage.width * packedTileImage.height) % (16 * 24) != 0) {
+        alert("Image does not have the correct aspect ratio, and is not a multiple of 16x24. Results inaccurate.");
+    }
     // the scale for the rest of the code, to make it generic. The normal size for the packed texture is 16x24
     scale = packedTileImage.width / 16;
     useBlend = false;
