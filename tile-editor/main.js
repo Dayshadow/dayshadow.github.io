@@ -231,7 +231,7 @@ function moveInCornerToEditor() {
     SPctx.putImageData(ICDrawOutput, 0, 0);
 }
 
-let scale;
+let scale = 1;
 let useBlend = true;
 
 // Boundary definitions for where to fetch the data from the base tile
@@ -351,6 +351,7 @@ function ORinit() {
     oRepresentationCanvas.height = ORh = 32 * scale;
 
     ORctx = oRepresentationCanvas.getContext("2d");
+    ORDrawOutput = BTctx.getImageData(0, 0, ORw, ORh)
 }
 // Called after the base image is uploaded and loaded
 // Draws all it can using the base tile provided, leaves incorners empty
@@ -479,6 +480,24 @@ function setUpICCanvasPT() {
     ICctx.putImageData(ICDrawOutput, 0, 0);
 
 }
+
+BTinit();
+ORinit();
+PTinit();
+ICinit();
+const defaultTemplateImage = document.getElementById("defaultTemplate");
+PTctx.drawImage(defaultTemplateImage, 0, 0);
+PTDrawOutput = PTctx.getImageData(0, 0, 16, 24);
+setUpBTCanvasPT();
+setUpICCanvasPT();
+setUpORCanvasPT();
+spriteEditorMode = "packedtile";
+// Base tile size is default 16x16
+spriteEditorCanvas.width = 16 * scale;
+spriteEditorCanvas.height = 24 * scale;
+
+EditorDrawOutput = PTDrawOutput;
+SPctx.putImageData(PTDrawOutput, 0, 0);
 
 // Draws the tile in this configuration (o):
 // . o .
