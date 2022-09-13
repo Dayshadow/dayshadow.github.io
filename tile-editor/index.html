@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tile Editor</title>
+    <style>
+        html {
+            height: 100%;
+            margin: 0;
+            padding: none;
+            background-color: rgb(20, 23, 27);
+
+        }
+
+        body {
+            margin: 0;
+            height: 100%;
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .container2 {
+            flex: 1;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        #previewContainer {
+            flex: 1;
+            text-align: center;
+            font-size: 20px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-weight: bold;
+            color: rgb(230, 236, 255);
+            padding: 10px;
+            white-space: nowrap;
+        }
+
+        .previewCanvas {
+            max-width: 512px;
+            max-height: 512px;
+            min-width: 128px;
+            border: 10px outset rgb(91, 117, 183);
+            image-rendering: pixelated;
+        }
+
+        #controls {
+            height: fit-content;
+            padding: 10px;
+            text-align: center;
+            font-size: 30px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-weight: bold;
+            color: rgb(230, 236, 255);
+            flex: 0.3;
+            border: 10px outset rgb(91, 117, 183);
+        }
+
+        #spriteEditorContainer {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            font-size: 30px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-weight: bold;
+            color: rgb(230, 236, 255);
+        }
+
+        #spriteEditorSurface {
+            width: 70%;
+            border: 10px outset rgb(91, 117, 183);
+            image-rendering: pixelated;
+        }
+
+        .fancyButton {
+            width: 60%;
+            min-width: fit-content;
+            height: max-content;
+            padding: 10px;
+
+            transition-duration: 0.4s;
+
+            font-weight: bold;
+            font-size: 15px;
+
+            border-radius: 10px;
+            border: 3px solid rgb(44, 77, 139);
+
+            color: rgb(230, 236, 255);
+            background-color: rgb(44, 77, 139);
+        }
+
+        .fancyColorSelector {
+            width: 80px;
+            height: 60px;
+            padding: 10px;
+
+            transition-duration: 0.4s;
+
+            font-weight: bold;
+            font-size: 15px;
+
+            border-radius: 10px;
+            border: 3px solid rgb(44, 77, 139);
+
+            color: rgb(230, 236, 255);
+            background-color: rgb(44, 77, 139);
+        }
+
+        .fancyColorSelector:hover {
+            background-color: white;
+            color: rgb(20, 23, 27);
+            box-shadow: 0 0px 15px 20px rgba(255, 255, 255, 0.24);
+        }
+
+        .fancyButton:hover {
+            background-color: white;
+            color: rgb(20, 23, 27);
+            box-shadow: 0 0px 15px 20px rgba(255, 255, 255, 0.24);
+        }
+
+        #break {
+            width: 100%;
+            height: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div id="controls">
+            <p style="margin: 0px;">Options</p>
+            <hr color="lightblue">
+            <input type="file" id="baseTileUploadInput" hidden />
+            <button id="baseTileUpload" class="fancyButton">Upload Base Tile...</button>
+            <br>
+            <br>
+            <input type="file" id="oRepresentationUploadInput" hidden />
+            <button id="oRepresentationUpload" class="fancyButton">Upload "O" Representation...</button>
+            <br>
+            <br>
+            <input type="file" id="packedTileUploadInput" hidden />
+            <button id="packedTileUpload" class="fancyButton">Upload Packed Tileset...</button>
+            <br>
+            <hr color="lightblue">
+
+        </div>
+        <div id="spriteEditorContainer">
+            <p>Sprite Editor</p>
+            <canvas id="spriteEditorSurface"></canvas>
+            <br>
+            <p style="display: inline; font-size: medium;">Color Picker  </p>
+            <input type="color" id="colorSelector" class="fancyColorSelector">
+        </div>
+
+        <div class="container2">
+            <div id="previewContainer">
+                <p>"O" Representation</p>
+                <br>
+                <canvas id="oRepresentation" class="previewCanvas"></canvas>
+                <br>
+                <button id="oRepresentationMoveIntoEditor" class="fancyButton">Move Into Sprite Editor...</button>
+            </div>
+            <div id="previewContainer">
+                <p>Base Tile</p>
+                <br>
+                <canvas id="baseTile" class="previewCanvas"></canvas>
+                <br>
+                <button id="baseTileMoveIntoEditor" class="fancyButton">Move Into Sprite Editor...</button>
+            </div>
+            <div id="break"></div>
+            <div id="previewContainer">
+                <p>Inner Corners</p>
+                <br>
+                <canvas id="inCorners" class="previewCanvas"></canvas>
+                <br>
+                <button id="inCornersMoveIntoEditor" class="fancyButton">Move Into Sprite Editor...</button>
+            </div>
+            <div id="previewContainer">
+                <p>Packed Tile</p>
+                <br>
+                <canvas id="packedTile" class="previewCanvas"></canvas>
+                <br>
+                <button id="packedTileMoveIntoEditor" class="fancyButton">Move Into Sprite Editor...</button>
+            </div>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+
+</html>
