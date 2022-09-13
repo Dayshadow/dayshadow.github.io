@@ -251,6 +251,7 @@ function setSpriteCanvasMouseCoords(e) {
         SPctx.putImageData(EditorDrawOutput, 0, 0);
     }
     if (rightMouseClicked) {
+        useBlend = false;
         if (spriteEditorMode == "unassigned") return;
         let col = [0, 0, 0, 0]
         setPixelInImageData(Math.floor(mouse.x), Math.floor(mouse.y), col, EditorDrawOutput );
