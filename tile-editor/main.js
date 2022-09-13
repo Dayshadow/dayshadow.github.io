@@ -486,6 +486,7 @@ ORinit();
 PTinit();
 ICinit();
 const defaultTemplateImage = document.getElementById("defaultTemplate");
+defaultTemplateImage.style.visibility = "hidden";
 PTctx.drawImage(defaultTemplateImage, 0, 0);
 PTDrawOutput = PTctx.getImageData(0, 0, 16, 24);
 setUpBTCanvasPT();
