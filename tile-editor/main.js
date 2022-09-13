@@ -284,6 +284,7 @@ function setSpriteCanvasMouseCoords(e) {
         SPctx.putImageData(EditorDrawOutput, 0, 0);
     }
     if (rightMouseClicked) {
+        useBlend = false;
         if (spriteEditorMode == "unassigned") return;
         let col = [0, 0, 0, 0]
         setPixelInImageData(Math.floor(mouse.x), Math.floor(mouse.y), col, EditorDrawOutput);
@@ -308,6 +309,7 @@ spriteEditorCanvas.addEventListener("mouseup", () => {
             BTDrawOutput = EditorDrawOutput;
             BTctx.putImageData(BTDrawOutput, 0, 0);
             setUpORCanvasBT();
+            drawICToOR();
             setUpPTCanvasBT()
             break;
         case "packedtile":
@@ -354,7 +356,7 @@ function ORinit() {
 // Draws all it can using the base tile provided, leaves incorners empty
 function setUpORCanvasBT() {
     ORDrawOutput = ORctx.getImageData(0, 0, ORw, ORh);
-    drawORepresentationFromBase();
+    drawORFromBT();
 }
 function setUpORCanvasOR() {
     ORctx.drawImage(oRepresentationImage, 0, 0);
@@ -382,6 +384,7 @@ function setUpBTCanvasBT() {
     // Used to get the image data array for the inputted base tile
     BTctx.drawImage(baseTileImage, 0, 0);
     BTDrawOutput = BTctx.getImageData(0, 0, BTw, BTh)
+    BTctx.putImageData(BTDrawOutput, 0, 0)
 }
 function setUpBTCanvasOR() {
     copyBoundsTo(mainTileBoundsOR, 4, 4, ORDrawOutput, BTDrawOutput, scale);
@@ -423,10 +426,12 @@ function setUpPTCanvasBT() {
     // Just put it in the bottom section
     PTctx.drawImage(baseTileImage, 0, 8 * scale);
     PTDrawOutput = PTctx.getImageData(0, 0, PTw, PTh)
+    PTctx.putImageData(PTDrawOutput, 0, 0);
 }
 function setUpPTCanvasPT() {
     PTctx.drawImage(packedTileImage, 0, 0);
     PTDrawOutput = PTctx.getImageData(0, 0, PTw, PTh)
+    PTctx.putImageData(PTDrawOutput, 0, 0);
 }
 
 function setUpPTCanvasOR() {
@@ -457,6 +462,7 @@ function ICinit() {
 
     ICctx = inCornerCanvas.getContext("2d");
     ICDrawOutput = ICctx.getImageData(0, 0, ICw, ICh)
+    
 }
 
 function setUpICCanvasOR() {
@@ -567,7 +573,7 @@ function drawICToOR() {
     ORctx.putImageData(ORDrawOutput, 0, 0);
 }
 
-function drawORepresentationFromBase() {
+function drawORFromBT() {
     drawORTilesBT();
     drawORSidesBT();
     drawOROuterCornersBT();
