@@ -25,8 +25,8 @@ function handleMouseUp(e) {
     }
 }
 
-document.addEventListener('mousedown', handleMouseDown);
-document.addEventListener('mouseup', handleMouseUp);
+window.addEventListener('mousedown', handleMouseDown);
+window.addEventListener('mouseup', handleMouseUp);
 
 document.getElementById('baseTileUpload').addEventListener("click", openBaseTileUpload)
 document.getElementById('baseTileUploadInput').addEventListener('change', handleBaseTileUpload, false);
@@ -36,35 +36,45 @@ function openBaseTileUpload() {
 
 let baseTileImage = new Image();
 function handleBaseTileUpload(e) {
+    if (document.getElementById('baseTileUploadInput').value == "") return;
     let reader = new FileReader;
     let file = e.target.files[0];
 
     reader.readAsDataURL(file);
 
     reader.onload = function (e) {
-        baseTileImage.src = e.target.result
+        // Reset the image variable
+        baseTileImage = new Image();
 
         // image needs to load for a bit after setting the image url
-        baseTileImage.addEventListener('load', () => {
-            if (baseTileImage.width !== baseTileImage.height) {
-                alert("Please supply a base tile with the same width as height, don't try to be funky it won't work.");
-                return;
-            }
-
-            // the scale for the rest of the code, to make it generic. The normal size for the base texture is 16x16, and is what most of the code is relative to
-            scale = baseTileImage.width / 16;
-            BTinit();
-            ORinit();
-            PTinit();
-            // important that this is first
-            setUpBTCanvasBT();
-            setUpORCanvasBT();
-            removeICFromOR(); // Since we're loading straight from base file, we don't know these
-            setUpPTCanvasBT()
-        })
+        baseTileImage.addEventListener('load', onLoadBTImage);
+        baseTileImage.src = e.target.result
+        // allow the change function to work if user selects the same image again
+        document.getElementById('baseTileUploadInput').value = "";
     }
 }
 
+const onLoadBTImage = () => {
+    if (baseTileImage.width !== baseTileImage.height) {
+        alert("Please supply a base tile with the same width as height, don't try to be funky it won't work.");
+        return;
+    }
+    if (baseTileImage.width % 8 != 0) {
+        alert("Dimensions of base tile must be a multiple of 8, so the result is inaccurate.");
+    }
+    // the scale for the rest of the code, to make it generic. The normal size for the base texture is 16x16, and is what most of the code is relative to
+    scale = baseTileImage.width / 16;
+    BTinit();
+    ORinit();
+    PTinit();
+    // important that this is first
+    setUpBTCanvasBT();
+    setUpORCanvasBT();
+    removeICFromOR(); // Since we're loading straight from base file, we don't know these
+    setUpPTCanvasBT();
+
+    moveBaseTileToEditor();
+}
 
 document.getElementById('oRepresentationUpload').addEventListener("click", openORepresentationUpload)
 document.getElementById('oRepresentationUploadInput').addEventListener('change', handleORepresentationUpload, false);
@@ -74,36 +84,46 @@ function openORepresentationUpload() {
 }
 let oRepresentationImage = new Image();
 function handleORepresentationUpload(e) {
+    if (document.getElementById('oRepresentationUploadInput').value == "") return;
     let reader = new FileReader;
     let file = e.target.files[0];
 
     reader.readAsDataURL(file);
 
     reader.onload = function (e) {
-        oRepresentationImage.src = e.target.result
+        // Reset the image variable
+        oRepresentationImage = new Image();
 
         // image needs to load for a bit after setting the image url
-        oRepresentationImage.addEventListener('load', () => {
-            if (oRepresentationImage.width !== oRepresentationImage.height) {
-                alert("Please supply a base tile with the same width as height, don't try to be funky it won't work.");
-                return;
-            }
-
-            // the scale for the rest of the code, to make it generic. The normal size for the base texture is 32x32
-            scale = oRepresentationImage.width / 32;
-            BTinit();
-            ORinit();
-            PTinit();
-            ICinit();
-            // important that this is first
-            setUpORCanvasOR();
-            setUpBTCanvasOR();
-            setUpPTCanvasOR();
-            setUpICCanvasOR();
-        })
+        oRepresentationImage.addEventListener('load', onLoadORImage)
+        oRepresentationImage.src = e.target.result
+        // allow the change function to work if user selects the same image again
+        document.getElementById('oRepresentationUploadInput').value = "";
     }
 }
 
+const onLoadORImage = () => {
+    if (oRepresentationImage.width !== oRepresentationImage.height) {
+        alert("Please supply an image with the same width as height, don't try to be funky it won't work.");
+        return;
+    }
+    if (oRepresentationImage.width % 16 != 0) {
+        alert("Dimensions of O Representation should be a multiple of 16, or else result will be inaccurate.");
+    }
+    // the scale for the rest of the code, to make it generic. The normal size for the base texture is 32x32
+    scale = oRepresentationImage.width / 32;
+    BTinit();
+    ORinit();
+    PTinit();
+    ICinit();
+    // important that this is first
+    setUpORCanvasOR();
+    setUpBTCanvasOR();
+    setUpPTCanvasOR();
+    setUpICCanvasOR();
+
+    moveORToEditor();
+};
 document.getElementById('packedTileUpload').addEventListener("click", openPackedTileUpload)
 document.getElementById('packedTileUploadInput').addEventListener('change', handlePackedTileUpload, false);
 
@@ -111,32 +131,45 @@ function openPackedTileUpload() {
     document.getElementById('packedTileUploadInput').click();
 }
 let packedTileImage = new Image();
+
 function handlePackedTileUpload(e) {
+    if (document.getElementById('packedTileUploadInput').value == "") return;
     let reader = new FileReader;
     let file = e.target.files[0];
 
     reader.readAsDataURL(file);
 
     reader.onload = function (e) {
-        packedTileImage.src = e.target.result
+        // Reset the image variable
+        packedTileImage = new Image();
 
+        if ((packedTileImage.width * packedTileImage.height) % (16 * 24) != 0) {
+            alert("Image does not have the correct aspect ratio, and is not a multiple of 16x24. Results inaccurate.");
+        }
         // image needs to load for a bit after setting the image url
-        packedTileImage.addEventListener('load', () => {
-
-            // the scale for the rest of the code, to make it generic. The normal size for the packed texture is 16x24
-            scale = packedTileImage.width / 16;
-            BTinit();
-            ORinit();
-            PTinit();
-            ICinit();
-            // important that this is first
-            setUpPTCanvasPT();
-            setUpBTCanvasPT();
-            setUpICCanvasPT();
-            setUpORCanvasPT();
-        })
+        packedTileImage.addEventListener('load', onLoadPTImage);
+        packedTileImage.src = e.target.result
+        // allow the change function to work if user selects the same image again
+        document.getElementById('packedTileUploadInput').value = "";
     }
 }
+
+const onLoadPTImage = () => {
+    // the scale for the rest of the code, to make it generic. The normal size for the packed texture is 16x24
+    scale = packedTileImage.width / 16;
+    useBlend = false;
+    BTinit();
+    ORinit();
+    PTinit();
+    ICinit();
+    // important that this is first
+    setUpPTCanvasPT();
+    setUpBTCanvasPT();
+    setUpICCanvasPT();
+    setUpORCanvasPT();
+
+    movePackedTileToEditor();
+};
 
 document.getElementById('oRepresentationMoveIntoEditor').addEventListener("click", moveORToEditor);
 function moveORToEditor() {
@@ -247,13 +280,13 @@ function setSpriteCanvasMouseCoords(e) {
         if (spriteEditorMode == "unassigned") return;
         let col = document.getElementById("colorSelector").value.convertToRGB();
         col[3] = 255;
-        setPixelInImageData(Math.floor(mouse.x), Math.floor(mouse.y), col, EditorDrawOutput );
+        setPixelInImageData(Math.floor(mouse.x), Math.floor(mouse.y), col, EditorDrawOutput);
         SPctx.putImageData(EditorDrawOutput, 0, 0);
     }
     if (rightMouseClicked) {
         if (spriteEditorMode == "unassigned") return;
         let col = [0, 0, 0, 0]
-        setPixelInImageData(Math.floor(mouse.x), Math.floor(mouse.y), col, EditorDrawOutput );
+        setPixelInImageData(Math.floor(mouse.x), Math.floor(mouse.y), col, EditorDrawOutput);
         SPctx.putImageData(EditorDrawOutput, 0, 0);
     }
 }
@@ -278,7 +311,6 @@ spriteEditorCanvas.addEventListener("mouseup", () => {
             setUpPTCanvasBT()
             break;
         case "packedtile":
-    console.log("Called")
             PTDrawOutput = EditorDrawOutput;
             PTctx.putImageData(PTDrawOutput, 0, 0);
             setUpBTCanvasPT();
@@ -389,7 +421,7 @@ function PTinit() {
 // packed tile base initializer
 function setUpPTCanvasBT() {
     // Just put it in the bottom section
-    PTctx.drawImage(baseTileImage, 0, 8);
+    PTctx.drawImage(baseTileImage, 0, 8 * scale);
     PTDrawOutput = PTctx.getImageData(0, 0, PTw, PTh)
 }
 function setUpPTCanvasPT() {
@@ -607,8 +639,8 @@ function withinBounds(x, y, bounds) {
     return true;
 }
 
-String.prototype.convertToRGB = function(){
-    var aRgbHex = this.replaceAll("#","").match(/.{1,2}/g);
+String.prototype.convertToRGB = function () {
+    var aRgbHex = this.replaceAll("#", "").match(/.{1,2}/g);
     var aRgb = [
         parseInt(aRgbHex[0], 16),
         parseInt(aRgbHex[1], 16),
