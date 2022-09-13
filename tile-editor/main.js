@@ -276,6 +276,7 @@ spriteEditorCanvas.addEventListener("mouseup", () => {
             BTDrawOutput = EditorDrawOutput;
             BTctx.putImageData(BTDrawOutput, 0, 0);
             setUpORCanvasBT();
+            drawICToOR();
             setUpPTCanvasBT()
             break;
         case "packedtile":
