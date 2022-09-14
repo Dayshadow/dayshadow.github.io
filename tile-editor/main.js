@@ -99,6 +99,17 @@ let mouse = {
     x: 1,
     y: 1
 };
+let keys = [];
+window.addEventListener('keypress', (e) => {
+    if (!(keys.includes(e.key))) {
+        keys.push(e.key);
+        keys.map((x) => { return x.toLowerCase() })
+    }
+});
+window.addEventListener('keyup', function (e) {
+    keys = keys.filter((x) => { return (x != e.key) });
+});
+
 let rightMouseClicked = false;
 let leftMouseClicked = false;
 function handleMouseDown(e) {
@@ -339,6 +350,12 @@ function setSpriteCanvasMouseCoords(e) {
     EditorDrawOutput = SPctx.getImageData(0, 0, spriteEditorCanvas.width, spriteEditorCanvas.height);
 
     if (leftMouseClicked) {
+        if (e.ctrlKey)  {
+            let tmpcol = getPixelFromImageData(Math.floor(mouse.x), Math.floor(mouse.y), EditorDrawOutput);
+            document.getElementById("colorSelector").value = rgbToHex(tmpcol[0], tmpcol[1], tmpcol[2]);
+            return;
+        }
+
         if (spriteEditorMode == "unassigned") return;
         let col = document.getElementById("colorSelector").value.convertToRGB();
         col[3] = 255;
@@ -356,7 +373,7 @@ function setSpriteCanvasMouseCoords(e) {
 
 const spriteEditorCanvas = document.getElementById("spriteEditorSurface");
 spriteEditorCanvas.addEventListener("mousemove", setSpriteCanvasMouseCoords);
-spriteEditorCanvas.addEventListener("drag", setSpriteCanvasMouseCoords);
+window.addEventListener("mousedown", setSpriteCanvasMouseCoords);
 spriteEditorCanvas.addEventListener("mouseup", () => {
     switch (spriteEditorMode) {
         case "orepresentation":
@@ -563,3 +580,11 @@ String.prototype.convertToRGB = function () {
     ];
     return aRgb;
 }
+function componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+  }
+  
+  function rgbToHex(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+  }
