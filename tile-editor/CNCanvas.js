@@ -14,7 +14,7 @@ connectivityCanvas.addEventListener("mousemove", setCNCanvasMouseCoords);
 connectivityCanvas.addEventListener("mousedown", setCNCanvasMouseCoords);
 
 let CNMousePosChanged = true;
-let CNStoredPos = {x: 0, y: 0};
+let CNStoredPos = { x: 0, y: 0 };
 
 function setCNCanvasMouseCoords(e) {
     let rect = e.target.getBoundingClientRect();
@@ -34,9 +34,11 @@ function handleTileDraw(e) {
     CNStoredPos.y = Math.floor(mouse.y / (8 * globalScale));
     if (leftMouseClicked) {
         tiles.setIndex2D(true, CNStoredPos.x, CNStoredPos.y)
+        drawExample();
+        return;
     }
     if (rightMouseClicked) {
         tiles.setIndex2D(false, CNStoredPos.x, CNStoredPos.y)
+        drawExample();
     }
-    drawExample();
 }
