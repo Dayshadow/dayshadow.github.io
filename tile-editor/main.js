@@ -50,8 +50,8 @@ function initCanvases() {
 }
 let tiles = [];
 
-let arrWidth = 20;
-let arrHeight = 20;
+let arrWidth = 64;
+let arrHeight = 64;
 
 for (let i = 0; i < arrHeight; i++) {
     tiles.push([]);
@@ -60,7 +60,8 @@ for (let i = 0; i < arrHeight; i++) {
             tiles[i].push(false);
             continue;
         }
-        tiles[i].push(!Math.round(Math.random()));
+        tiles[i].push(false);
+        //tiles[i].push(!Math.round(Math.random()));
     }
 }
 
@@ -86,8 +87,8 @@ function drawExample() {
             if (tiles.relative2D(1, -1, i, j)) tr = true;
             if (tiles.relative2D(-1, 1, i, j)) bl = true;
 
-            let x = j * 8 + 20;
-            let y = i * 8 + 20;
+            let x = j * 8;
+            let y = i * 8;
             if (tiles[i][j]) {
                 CEctx.srcToDst(4, 12, 8, 8, x + 4, y + 4, tmpCtx, globalScale);
             } else {
@@ -118,8 +119,8 @@ function drawExample() {
             if (tiles.relative2D(1, -1, i, j)) tr = true;
             if (tiles.relative2D(-1, 1, i, j)) bl = true;
 
-            let x = j * 8 + 20;
-            let y = i * 8 + 20;
+            let x = j * 8;
+            let y = i * 8;
             if (top && right && !tr) CEctx.srcToDst(0, 4, 4, 4, x + 12, y, tmpCtx, globalScale);
             if (right && bottom && !br) CEctx.srcToDst(0, 0, 4, 4, x + 12, y + 12, tmpCtx, globalScale);
             if (bottom && left && !bl) CEctx.srcToDst(4, 0, 4, 4, x, y + 12, tmpCtx, globalScale);

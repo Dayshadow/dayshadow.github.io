@@ -60,3 +60,10 @@ Array.prototype.relative2D = function (x, y, i, j) {
     if (j + x >= this[0].length) return false;
     return this[i + y][j + x];
 };
+Array.prototype.setIndex2D = function(val, x, y) {
+    if (y < 0) return;
+    if (y >= this.length) return;
+    if (x < 0) return;
+    if (x >= this[0].length) return;
+    this[y][x] = val;
+}
