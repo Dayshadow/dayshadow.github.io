@@ -1,3 +1,100 @@
+const BTtoORDictionary = {
+    srcDst: [
+        { src: [4, 4, 8, 8], dst: [12, 4] },
+        { src: [4, 4, 8, 8], dst: [4, 12] },
+        { src: [4, 4, 8, 8], dst: [12, 20] },
+        { src: [4, 4, 8, 8], dst: [20, 12] },
+
+        { src: [0, 4, 4, 8], dst: [0, 12] },
+        { src: [0, 4, 4, 8], dst: [8, 4] },
+        { src: [0, 4, 4, 8], dst: [8, 20] },
+        { src: [0, 4, 4, 8], dst: [16, 12] },
+
+        { src: [12, 4, 4, 8], dst: [12, 12] },
+        { src: [12, 4, 4, 8], dst: [20, 4] },
+        { src: [12, 4, 4, 8], dst: [20, 20] },
+        { src: [12, 4, 4, 8], dst: [28, 12] },
+
+        { src: [4, 0, 8, 4], dst: [4, 8] },
+        { src: [4, 0, 8, 4], dst: [12, 0] },
+        { src: [4, 0, 8, 4], dst: [12, 16] },
+        { src: [4, 0, 8, 4], dst: [20, 8] },
+
+        { src: [4, 12, 8, 4], dst: [4, 20] },
+        { src: [4, 12, 8, 4], dst: [12, 12] },
+        { src: [4, 12, 8, 4], dst: [20, 20] },
+        { src: [4, 12, 8, 4], dst: [12, 28] },
+
+        { src: [0, 0, 4, 4], dst: [8, 0] },
+        { src: [0, 0, 4, 4], dst: [0, 8] },
+
+        { src: [12, 0, 4, 4], dst: [20, 0] },
+        { src: [12, 0, 4, 4], dst: [28, 8] },
+
+        { src: [0, 12, 4, 4], dst: [8, 28] },
+        { src: [0, 12, 4, 4], dst: [0, 20] },
+
+        { src: [12, 12, 4, 4], dst: [28, 20] },
+        { src: [12, 12, 4, 4], dst: [20, 28] }
+    ]
+}
+
+const ITtoORDictionary = {
+    srcDst: [
+        { src: [4, 4, 4, 4], dst: [8, 8] },
+        { src: [0, 4, 4, 4], dst: [20, 8] },
+        { src: [4, 0, 4, 4], dst: [8, 20] },
+        { src: [0, 0, 4, 4], dst: [20, 20] },
+        { src: [0, 0, 8, 8], dst: [12, 12] }
+    ]
+}
+
+const ORtoBTDictionary = {
+    srcDst: [
+        { src: [12, 4, 8, 8], dst: [4, 4] },
+
+        { src: [20, 0, 4, 4], dst: [12, 0] },
+        { src: [8, 0, 4, 4], dst: [0, 0] },
+        { src: [8, 28, 4, 4], dst: [0, 12] },
+        { src: [28, 20, 4, 4], dst: [12, 12] },
+
+        { src: [0, 12, 4, 8], dst: [0, 4] },
+        { src: [28, 12, 4, 8], dst: [12, 4] },
+        { src: [12, 0, 8, 4], dst: [4, 0] },
+        { src: [12, 28, 8, 4], dst: [4, 12] },
+
+    ]
+}
+
+const ORtoPTDictionary = {
+    srcDst: [
+        { src: [12, 12, 8, 8], dst: [0, 0] },
+
+        { src: [12, 4, 8, 8], dst: [4, 12] },
+
+        { src: [20, 0, 4, 4], dst: [12, 8] },
+        { src: [8, 0, 4, 4], dst: [0, 8] },
+        { src: [8, 28, 4, 4], dst: [0, 20] },
+        { src: [28, 20, 4, 4], dst: [12, 20] },
+
+        { src: [0, 12, 4, 8], dst: [0, 12] },
+        { src: [28, 12, 4, 8], dst: [12, 12] },
+        { src: [12, 0, 8, 4], dst: [4, 8] },
+        { src: [12, 28, 8, 4], dst: [4, 20] }
+    ]
+}
+const PTtoICDictionary = {
+    srcDst: [
+        { src: [0, 0, 8, 8], dst: [0, 0] }
+    ]
+}
+
+const ORtoICDictionary = {
+    srcDst: [
+        { src: [12, 12, 8, 8], dst: [0, 0] }
+    ]
+}
+
 let mouse = {
     x: 1,
     y: 1
@@ -70,7 +167,6 @@ const onLoadBTImage = () => {
     // important that this is first
     setUpBTCanvasBT();
     setUpORCanvasBT();
-    removeICFromOR(); // Since we're loading straight from base file, we don't know these
     setUpPTCanvasBT();
 
     moveBaseTileToEditor();
@@ -157,7 +253,6 @@ const onLoadPTImage = () => {
     }
     // the scale for the rest of the code, to make it generic. The normal size for the packed texture is 16x24
     scale = packedTileImage.width / 16;
-    useBlend = false;
     BTinit();
     ORinit();
     PTinit();
@@ -173,7 +268,7 @@ const onLoadPTImage = () => {
 
 document.getElementById('oRepresentationMoveIntoEditor').addEventListener("click", moveORToEditor);
 function moveORToEditor() {
-    if (!ORDrawOutput) {
+    if (!ORctx) {
         alert("Error: The O Representation was not Initialized");
         return;
     }
@@ -183,13 +278,13 @@ function moveORToEditor() {
     spriteEditorCanvas.height = 32 * scale;
 
     // keep it up to date
-    EditorDrawOutput = ORDrawOutput;
-    SPctx.putImageData(ORDrawOutput, 0, 0);
+    EditorDrawOutput = ORctx.getImageData(0, 0, ORw, ORh);
+    SPctx.putImageData(EditorDrawOutput, 0, 0);
 }
 
 document.getElementById('baseTileMoveIntoEditor').addEventListener("click", moveBaseTileToEditor);
 function moveBaseTileToEditor() {
-    if (!BTDrawOutput) {
+    if (!BTctx) {
         alert("Error: The Base Tile was not Initialized");
         return;
     }
@@ -198,13 +293,13 @@ function moveBaseTileToEditor() {
     spriteEditorCanvas.width = 16 * scale;
     spriteEditorCanvas.height = 16 * scale;
 
-    EditorDrawOutput = BTDrawOutput;
-    SPctx.putImageData(BTDrawOutput, 0, 0);
+    EditorDrawOutput = BTctx.getImageData(0, 0, BTw, BTh);
+    SPctx.putImageData(EditorDrawOutput, 0, 0);
 }
 
 document.getElementById('packedTileMoveIntoEditor').addEventListener("click", movePackedTileToEditor);
 function movePackedTileToEditor() {
-    if (!PTDrawOutput) {
+    if (!PTctx) {
         alert("Error: The Packed Tile was not Initialized");
         return;
     }
@@ -213,12 +308,12 @@ function movePackedTileToEditor() {
     spriteEditorCanvas.width = 16 * scale;
     spriteEditorCanvas.height = 24 * scale;
 
-    EditorDrawOutput = PTDrawOutput;
-    SPctx.putImageData(PTDrawOutput, 0, 0);
+    EditorDrawOutput = PTctx.getImageData(0, 0, PTw, PTh);
+    SPctx.putImageData(EditorDrawOutput, 0, 0);
 }
 document.getElementById('inCornersMoveIntoEditor').addEventListener("click", moveInCornerToEditor);
 function moveInCornerToEditor() {
-    if (!ICDrawOutput) {
+    if (!ICctx) {
         alert("Error: The Inner Corners were not Initialized");
         return;
     }
@@ -227,47 +322,11 @@ function moveInCornerToEditor() {
     spriteEditorCanvas.width = 8 * scale;
     spriteEditorCanvas.height = 8 * scale;
 
-    EditorDrawOutput = ICDrawOutput;
-    SPctx.putImageData(ICDrawOutput, 0, 0);
+    EditorDrawOutput = ICctx.getImageData(0, 0, ICw, ICh);
+    SPctx.putImageData(EditorDrawOutput, 0, 0);
 }
 
 let scale = 1;
-let useBlend = true;
-
-// Boundary definitions for where to fetch the data from the base tile
-// The "Base" tile is the (typically) 16x16 region at the bottom of the final variation, not containing the incorners.
-const mainTileBoundsBase = [4, 4, 8, 8]
-const sideLeftBoundsBase = [0, 4, 4, 8]
-const sideTopBoundsBase = [4, 0, 8, 4]
-const sideRightBoundsBase = [12, 4, 4, 8]
-const sideBottomBoundsBase = [4, 12, 8, 4]
-
-const cornerTlBoundsBase = [0, 0, 4, 4]
-const cornerTrBoundsBase = [12, 0, 4, 4]
-const cornerBlBoundsBase = [0, 12, 4, 4]
-const cornerBrBoundsBase = [12, 12, 4, 4]
-
-// Boundary definitions that fetch from portions of the o representation
-// Are used to translate from o representation to other representations
-const mainTileBoundsOR = [12, 4, 8, 8];
-const sideLeftBoundsOR = [0, 12, 4, 8];
-const sideRightBoundsOR = [28, 12, 4, 8];
-const sideTopBoundsOR = [12, 0, 8, 4];
-const sideBottomBoundsOR = [12, 28, 8, 4];
-
-const cornerTrBoundsOR = [8, 0, 4, 4];
-const cornerTlBoundsOR = [20, 0, 4, 4];
-const cornerBlBoundsOR = [8, 28, 4, 4];
-const cornerBrBoundsOR = [28, 20, 4, 4];
-const inCornerBoundsOR = [12, 12, 8, 8];
-
-// yed
-const cornerTlBoundsIC = [0, 0, 4, 4];
-const cornerTrBoundsIC = [4, 0, 4, 4];
-const cornerBlBoundsIC = [0, 4, 4, 4];
-const cornerBrBoundsIC = [4, 4, 4, 4];
-
-
 
 function setSpriteCanvasMouseCoords(e) {
     let rect = e.target.getBoundingClientRect();
@@ -276,6 +335,9 @@ function setSpriteCanvasMouseCoords(e) {
     let y = ((e.clientY - rect.top - 10) / e.target.clientHeight) * e.target.height;
     mouse.x = x;
     mouse.y = y;
+
+    EditorDrawOutput = SPctx.getImageData(0, 0, spriteEditorCanvas.width, spriteEditorCanvas.height);
+
     if (leftMouseClicked) {
         if (spriteEditorMode == "unassigned") return;
         let col = document.getElementById("colorSelector").value.convertToRGB();
@@ -284,7 +346,6 @@ function setSpriteCanvasMouseCoords(e) {
         SPctx.putImageData(EditorDrawOutput, 0, 0);
     }
     if (rightMouseClicked) {
-        useBlend = false;
         if (spriteEditorMode == "unassigned") return;
         let col = [0, 0, 0, 0]
         setPixelInImageData(Math.floor(mouse.x), Math.floor(mouse.y), col, EditorDrawOutput);
@@ -295,33 +356,29 @@ function setSpriteCanvasMouseCoords(e) {
 
 const spriteEditorCanvas = document.getElementById("spriteEditorSurface");
 spriteEditorCanvas.addEventListener("mousemove", setSpriteCanvasMouseCoords);
+spriteEditorCanvas.addEventListener("drag", setSpriteCanvasMouseCoords);
 spriteEditorCanvas.addEventListener("mouseup", () => {
     switch (spriteEditorMode) {
         case "orepresentation":
-            ORDrawOutput = EditorDrawOutput;
-            ORctx.putImageData(ORDrawOutput, 0, 0);
+            ORctx.putImageData(EditorDrawOutput, 0, 0);
             setUpBTCanvasOR();
             setUpPTCanvasOR();
             setUpICCanvasOR();
             break;
         case "basetile":
-
-            BTDrawOutput = EditorDrawOutput;
-            BTctx.putImageData(BTDrawOutput, 0, 0);
+            BTctx.putImageData(EditorDrawOutput, 0, 0);
             setUpORCanvasBT();
             drawICToOR();
-            setUpPTCanvasBT()
+            setUpPTCanvasOR();
             break;
         case "packedtile":
-            PTDrawOutput = EditorDrawOutput;
-            PTctx.putImageData(PTDrawOutput, 0, 0);
+            PTctx.putImageData(EditorDrawOutput, 0, 0);
             setUpBTCanvasPT();
             setUpICCanvasPT();
             setUpORCanvasPT();
             break;
         case "incorner":
-            ICDrawOutput = EditorDrawOutput;
-            ICctx.putImageData(ICDrawOutput, 0, 0);
+            ICctx.putImageData(EditorDrawOutput, 0, 0);
             // gotta do some garbage
             drawICToOR();
             setUpBTCanvasOR();
@@ -343,7 +400,6 @@ let spriteEditorMode = "unassigned";
 const oRepresentationCanvas = document.getElementById("oRepresentation");
 let ORctx;
 let ORw, ORh;
-let ORDrawOutput;
 
 function ORinit() {
     // allow for generic sizes in case you want to generate different sizes of tile sprites or whatever
@@ -351,27 +407,19 @@ function ORinit() {
     oRepresentationCanvas.height = ORh = 32 * scale;
 
     ORctx = oRepresentationCanvas.getContext("2d");
-    ORDrawOutput = BTctx.getImageData(0, 0, ORw, ORh)
 }
-// Called after the base image is uploaded and loaded
-// Draws all it can using the base tile provided, leaves incorners empty
-function setUpORCanvasBT() {
-    ORDrawOutput = ORctx.getImageData(0, 0, ORw, ORh);
-    drawORFromBT();
-}
+
 function setUpORCanvasOR() {
     ORctx.drawImage(oRepresentationImage, 0, 0);
-    ORDrawOutput = ORctx.getImageData(0, 0, ORw, ORh);
 }
 function setUpORCanvasPT() {
     // cheating lol
-    setUpORCanvasBT();
+    setUpORCanvasBT();;
     drawICToOR();
 }
 const BaseTileCanvas = document.getElementById("baseTile");
 let BTctx;
 let BTw, BTh;
-let BTDrawOutput;
 
 function BTinit() {
     // allow for generic sizes in case you want to generate different sizes of tile sprites or whatever
@@ -384,101 +432,65 @@ function BTinit() {
 function setUpBTCanvasBT() {
     // Used to get the image data array for the inputted base tile
     BTctx.drawImage(baseTileImage, 0, 0);
-    BTDrawOutput = BTctx.getImageData(0, 0, BTw, BTh)
-    BTctx.putImageData(BTDrawOutput, 0, 0)
 }
+
 function setUpBTCanvasOR() {
-    copyBoundsTo(mainTileBoundsOR, 4, 4, ORDrawOutput, BTDrawOutput, scale);
-    copyBoundsTo(cornerTlBoundsOR, 12, 0, ORDrawOutput, BTDrawOutput, scale);
-    copyBoundsTo(cornerTrBoundsOR, 0, 0, ORDrawOutput, BTDrawOutput, scale);
-    copyBoundsTo(cornerBlBoundsOR, 0, 12, ORDrawOutput, BTDrawOutput, scale);
-    copyBoundsTo(cornerBrBoundsOR, 12, 12, ORDrawOutput, BTDrawOutput, scale);
+    translateFromDictionary(ORtoBTDictionary, ORctx, BTctx, scale);
+}
 
-    copyBoundsTo(sideLeftBoundsOR, 0, 4, ORDrawOutput, BTDrawOutput, scale);
-    copyBoundsTo(sideRightBoundsOR, 12, 4, ORDrawOutput, BTDrawOutput, scale);
-    copyBoundsTo(sideTopBoundsOR, 4, 0, ORDrawOutput, BTDrawOutput, scale);
-    copyBoundsTo(sideBottomBoundsOR, 4, 12, ORDrawOutput, BTDrawOutput, scale);
-
-    BTctx.putImageData(BTDrawOutput, 0, 0)
+const PTtoBTDictionary = {
+    srcDst: [
+        { src: [0, 8, 16, 16], dst: [0, 0] },
+    ]
 }
 function setUpBTCanvasPT() {
-    // too lazy to make a const for the bounds
-    copyBoundsTo([0, 8, 16, 16], 0, 0, PTDrawOutput, BTDrawOutput, scale);
-
-    BTctx.putImageData(BTDrawOutput, 0, 0)
-
+    translateFromDictionary(PTtoBTDictionary, PTctx, BTctx, scale);
 }
 
 const packedTileCanvas = document.getElementById("packedTile");
 let PTctx;
 let PTw, PTh;
-let PTDrawOutput;
 
 function PTinit() {
     packedTileCanvas.width = PTw = 16 * scale;
     packedTileCanvas.height = PTh = 24 * scale;
 
     PTctx = packedTileCanvas.getContext("2d");
-    PTDrawOutput = PTctx.getImageData(0, 0, PTw, PTh);
 }
 
 // packed tile base initializer
 function setUpPTCanvasBT() {
     // Just put it in the bottom section
     PTctx.drawImage(baseTileImage, 0, 8 * scale);
-    PTDrawOutput = PTctx.getImageData(0, 0, PTw, PTh)
-    PTctx.putImageData(PTDrawOutput, 0, 0);
 }
 function setUpPTCanvasPT() {
     PTctx.drawImage(packedTileImage, 0, 0);
-    PTDrawOutput = PTctx.getImageData(0, 0, PTw, PTh)
-    PTctx.putImageData(PTDrawOutput, 0, 0);
 }
 
+
 function setUpPTCanvasOR() {
-
-    copyBoundsTo(inCornerBoundsOR, 0, 0, ORDrawOutput, PTDrawOutput, scale);
-    copyBoundsTo(mainTileBoundsOR, 4, 12, ORDrawOutput, PTDrawOutput, scale);
-    copyBoundsTo(cornerTlBoundsOR, 12, 8, ORDrawOutput, PTDrawOutput, scale);
-    copyBoundsTo(cornerTrBoundsOR, 0, 8, ORDrawOutput, PTDrawOutput, scale);
-    copyBoundsTo(cornerBlBoundsOR, 0, 20, ORDrawOutput, PTDrawOutput, scale);
-    copyBoundsTo(cornerBrBoundsOR, 12, 20, ORDrawOutput, PTDrawOutput, scale);
-
-    copyBoundsTo(sideLeftBoundsOR, 0, 12, ORDrawOutput, PTDrawOutput, scale);
-    copyBoundsTo(sideRightBoundsOR, 12, 12, ORDrawOutput, PTDrawOutput, scale);
-    copyBoundsTo(sideTopBoundsOR, 4, 8, ORDrawOutput, PTDrawOutput, scale);
-    copyBoundsTo(sideBottomBoundsOR, 4, 20, ORDrawOutput, PTDrawOutput, scale);
-
-    PTctx.putImageData(PTDrawOutput, 0, 0);
+    translateFromDictionary(ORtoPTDictionary, ORctx, PTctx, scale);
 }
 
 const inCornerCanvas = document.getElementById("inCorners");
 let ICctx;
 let ICw, ICh;
-let ICDrawOutput;
 
 function ICinit() {
     inCornerCanvas.width = ICw = 8 * scale;
     inCornerCanvas.height = ICh = 8 * scale;
 
     ICctx = inCornerCanvas.getContext("2d");
-    ICDrawOutput = ICctx.getImageData(0, 0, ICw, ICh)
-    
 }
 
 function setUpICCanvasOR() {
-    if (!ICDrawOutput) return;
-    copyBoundsTo(inCornerBoundsOR, 0, 0, ORDrawOutput, ICDrawOutput, scale);
-
-    ICctx.putImageData(ICDrawOutput, 0, 0);
+    //if (!ICctx) ICinit();
+    translateFromDictionary(ORtoICDictionary, ORctx, ICctx, scale);
 }
+
 function setUpICCanvasPT() {
-    if (!ICDrawOutput) ICinit();
-    // too lazy to define const again
-    copyBoundsTo([0, 0, 8, 8], 0, 0, PTDrawOutput, ICDrawOutput, scale);
-
-    ICctx.putImageData(ICDrawOutput, 0, 0);
-
+    //if (!ICctx) ICinit();
+    translateFromDictionary(PTtoICDictionary, PTctx, ICctx, scale);
 }
 
 BTinit();
@@ -488,129 +500,35 @@ ICinit();
 const defaultTemplateImage = document.getElementById("defaultTemplate");
 defaultTemplateImage.style.visibility = "hidden";
 PTctx.drawImage(defaultTemplateImage, 0, 0);
-PTDrawOutput = PTctx.getImageData(0, 0, 16, 24);
 setUpBTCanvasPT();
 setUpICCanvasPT();
+setUpORCanvasBT();
 setUpORCanvasPT();
+
 spriteEditorMode = "packedtile";
 // Base tile size is default 16x16
 spriteEditorCanvas.width = 16 * scale;
 spriteEditorCanvas.height = 24 * scale;
 
-EditorDrawOutput = PTDrawOutput;
-SPctx.putImageData(PTDrawOutput, 0, 0);
-
-// Draws the tile in this configuration (o):
-// . o .
-// o . o
-// . o .
-// The inCorners will not be drawn yet. that's for the next stage.
-function drawORTilesBT() {
-    useBlend = true;
-    copyBoundsTo(mainTileBoundsBase, 12, 4, BTDrawOutput, ORDrawOutput, scale);
-    copyBoundsTo(mainTileBoundsBase, 4, 12, BTDrawOutput, ORDrawOutput, scale);
-    copyBoundsTo(mainTileBoundsBase, 12, 20, BTDrawOutput, ORDrawOutput, scale);
-    copyBoundsTo(mainTileBoundsBase, 20, 12, BTDrawOutput, ORDrawOutput, scale);
-
-    ORctx.putImageData(ORDrawOutput, 0, 0)
-}
-
-// Draws the sides for the oRepresentation stage here (x):
-//   x
-// x o x
-// o x o
-// x o x
-//   x
-function drawORSidesBT() {
-    useBlend = true;
-    // could proabably make this a loop but oh well
-    copyBoundsTo(sideLeftBoundsBase, 0, 12, BTDrawOutput, ORDrawOutput, scale);
-    copyBoundsTo(sideLeftBoundsBase, 8, 4, BTDrawOutput, ORDrawOutput, scale);
-    copyBoundsTo(sideLeftBoundsBase, 8, 20, BTDrawOutput, ORDrawOutput, scale);
-    copyBoundsTo(sideLeftBoundsBase, 16, 12, BTDrawOutput, ORDrawOutput, scale);
-
-    copyBoundsTo(sideRightBoundsBase, 12, 12, BTDrawOutput, ORDrawOutput, scale);
-    copyBoundsTo(sideRightBoundsBase, 20, 4, BTDrawOutput, ORDrawOutput, scale);
-    copyBoundsTo(sideRightBoundsBase, 20, 20, BTDrawOutput, ORDrawOutput, scale);
-    copyBoundsTo(sideRightBoundsBase, 28, 12, BTDrawOutput, ORDrawOutput, scale);
-
-    copyBoundsTo(sideTopBoundsBase, 4, 8, BTDrawOutput, ORDrawOutput, scale);
-    copyBoundsTo(sideTopBoundsBase, 12, 0, BTDrawOutput, ORDrawOutput, scale);
-    copyBoundsTo(sideTopBoundsBase, 12, 16, BTDrawOutput, ORDrawOutput, scale);
-    copyBoundsTo(sideTopBoundsBase, 20, 8, BTDrawOutput, ORDrawOutput, scale);
-
-    copyBoundsTo(sideBottomBoundsBase, 4, 20, BTDrawOutput, ORDrawOutput, scale);
-    copyBoundsTo(sideBottomBoundsBase, 12, 12, BTDrawOutput, ORDrawOutput, scale);
-    copyBoundsTo(sideBottomBoundsBase, 12, 12, BTDrawOutput, ORDrawOutput, scale);
-    copyBoundsTo(sideBottomBoundsBase, 20, 20, BTDrawOutput, ORDrawOutput, scale);
-    copyBoundsTo(sideBottomBoundsBase, 12, 28, BTDrawOutput, ORDrawOutput, scale);
-
-    ORctx.putImageData(ORDrawOutput, 0, 0)
-}
-
-function drawOROuterCornersBT() {
-    useBlend = true;
-    copyBoundsTo(cornerTlBoundsBase, 8, 0, BTDrawOutput, ORDrawOutput, scale);
-    copyBoundsTo(cornerTlBoundsBase, 0, 8, BTDrawOutput, ORDrawOutput, scale);
-
-    copyBoundsTo(cornerTrBoundsBase, 20, 0, BTDrawOutput, ORDrawOutput, scale);
-    copyBoundsTo(cornerTrBoundsBase, 28, 8, BTDrawOutput, ORDrawOutput, scale);
-
-    copyBoundsTo(cornerBlBoundsBase, 8, 28, BTDrawOutput, ORDrawOutput, scale);
-    copyBoundsTo(cornerBlBoundsBase, 0, 20, BTDrawOutput, ORDrawOutput, scale);
-
-    copyBoundsTo(cornerBrBoundsBase, 28, 20, BTDrawOutput, ORDrawOutput, scale);
-    copyBoundsTo(cornerBrBoundsBase, 20, 28, BTDrawOutput, ORDrawOutput, scale);
-
-    ORctx.putImageData(ORDrawOutput, 0, 0)
-}
-
-function removeICFromOR() {
-    useBlend = false;
-    const clearInCornerBounds = [0, 0, 4, 4];
-
-    // clear the center
-    clearBounds(mainTileBoundsBase, 12, 12, ORDrawOutput, scale);
-
-    clearBounds(clearInCornerBounds, 8, 8, ORDrawOutput, scale);
-    clearBounds(clearInCornerBounds, 8, 20, ORDrawOutput, scale);
-    clearBounds(clearInCornerBounds, 20, 8, ORDrawOutput, scale);
-    clearBounds(clearInCornerBounds, 20, 20, ORDrawOutput, scale);
-
-    ORctx.putImageData(ORDrawOutput, 0, 0)
-}
+EditorDrawOutput = PTctx.getImageData(0, 0, PTw, PTh);
+SPctx.putImageData(EditorDrawOutput, 0, 0);
 
 function drawICToOR() {
-    if (!ICDrawOutput) ICinit();
-    useBlend = false;
-    copyBoundsTo(cornerBrBoundsIC, 8, 8, ICDrawOutput, ORDrawOutput, scale);
-    copyBoundsTo(cornerBlBoundsIC, 20, 8, ICDrawOutput, ORDrawOutput, scale);
-    copyBoundsTo(cornerTrBoundsIC, 8, 20, ICDrawOutput, ORDrawOutput, scale);
-    copyBoundsTo(cornerTlBoundsIC, 20, 20, ICDrawOutput, ORDrawOutput, scale);
-
-    copyBoundsTo([0, 0, 8, 8], 12, 12, ICDrawOutput, ORDrawOutput, scale);
-
-    ORctx.putImageData(ORDrawOutput, 0, 0);
+    translateFromDictionary(ITtoORDictionary, ICctx, ORctx, scale);
 }
 
-function drawORFromBT() {
-    drawORTilesBT();
-    drawORSidesBT();
-    drawOROuterCornersBT();
+function setUpORCanvasBT() {
+    translateFromDictionary(BTtoORDictionary, BTctx, ORctx, scale);
 }
 
-
-// srcBounds defines the dimensions of the box we want to copy, and pasteX, pasteY determines where it's pasted in the output
-// globalScale is just to make the code more general
-// donno why I did this instead of using pasteimagedata
-function copyBoundsTo(srcBounds, pasteX, pasteY, inData, outData, globalScale) {
-    for (let j = 0; j < srcBounds[3] * globalScale; j++) {
-        for (let i = 0; i < srcBounds[2] * globalScale; i++) {
-            let srcPixel = getPixelFromImageData((i + srcBounds[0] * globalScale), (j + srcBounds[1] * globalScale), inData);
-            setPixelInImageData(pasteX * globalScale + i, pasteY * globalScale + j, srcPixel, outData);
-        }
+function translateFromDictionary(dictionary, srcCtx, dstCtx, globalScale) {
+    let data = dictionary.srcDst;
+    for (let e of data) {
+        let img = srcCtx.getImageData(e.src[0] * globalScale, e.src[1] * globalScale, e.src[2] * globalScale, e.src[3] * globalScale);
+        dstCtx.putImageData(img, e.dst[0] * globalScale, e.dst[1] * globalScale);
     }
 }
+
 function clearBounds(srcBounds, clearX, clearY, outData, globalScale) {
     for (let j = 0; j < srcBounds[3] * globalScale; j++) {
         for (let i = 0; i < srcBounds[2] * globalScale; i++) {
@@ -631,40 +549,11 @@ function getPixelFromImageData(x, y, data) {
 }
 function setPixelInImageData(x, y, pixelArr, data) {
     let index = (data.width) * y + (x) % (data.width);
-    if (useBlend) {
-        // normalize
-        let srcR = pixelArr[0] / 255;
-        let srcG = pixelArr[1] / 255;
-        let srcB = pixelArr[2] / 255;
-        let srcA = pixelArr[3] / 255;
-        let dstR = data.data[index * 4 + 0] / 255;
-        let dstG = data.data[index * 4 + 1] / 255;
-        let dstB = data.data[index * 4 + 2] / 255;
-        let dstA = data.data[index * 4 + 3] / 255;
-        // alpha blending!
-        // ImageData is stored as 0-255 so we have to un-normalize it
-        data.data[index * 4 + 0] = Math.floor(256 * (srcR * srcA + (dstR * (1.0 - srcA))));
-        data.data[index * 4 + 1] = Math.floor(256 * (srcG * srcA + (dstG * (1.0 - srcA))));
-        data.data[index * 4 + 2] = Math.floor(256 * (srcB * srcA + (dstB * (1.0 - srcA))));
-        data.data[index * 4 + 3] = Math.floor(256 * (srcA * srcA + (dstA * (1.0 - srcA))));
-    } else {
-        data.data[index * 4 + 0] = pixelArr[0];
-        data.data[index * 4 + 1] = pixelArr[1];
-        data.data[index * 4 + 2] = pixelArr[2];
-        data.data[index * 4 + 3] = pixelArr[3];
-    }
+    data.data[index * 4 + 0] = pixelArr[0];
+    data.data[index * 4 + 1] = pixelArr[1];
+    data.data[index * 4 + 2] = pixelArr[2];
+    data.data[index * 4 + 3] = pixelArr[3];
 }
-function withinBounds(x, y, bounds) {
-    let b_x = bounds[0];
-    let b_y = bounds[1];
-    let b_w = bounds[2];
-    let b_h = bounds[3];
-
-    if ((x < b_x) || (x >= b_x + b_w)) return false;
-    if ((y < b_y) || (y >= b_y + b_h)) return false;
-    return true;
-}
-
 String.prototype.convertToRGB = function () {
     var aRgbHex = this.replaceAll("#", "").match(/.{1,2}/g);
     var aRgb = [
