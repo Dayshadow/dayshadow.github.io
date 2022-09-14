@@ -279,6 +279,7 @@ const onLoadPTImage = () => {
 
 document.getElementById('oRepresentationMoveIntoEditor').addEventListener("click", moveORToEditor);
 function moveORToEditor() {
+    overlayToggle = false;
     if (!ORctx) {
         alert("Error: The O Representation was not Initialized");
         return;
@@ -287,7 +288,7 @@ function moveORToEditor() {
     // O Representation size is default 32x32
     spriteEditorCanvas.width = 32 * scale;
     spriteEditorCanvas.height = 32 * scale;
-
+    setOverlayDimensions()
     // keep it up to date
     EditorDrawOutput = ORctx.getImageData(0, 0, ORw, ORh);
     SPctx.putImageData(EditorDrawOutput, 0, 0);
@@ -295,6 +296,7 @@ function moveORToEditor() {
 
 document.getElementById('baseTileMoveIntoEditor').addEventListener("click", moveBaseTileToEditor);
 function moveBaseTileToEditor() {
+    overlayToggle = false;
     if (!BTctx) {
         alert("Error: The Base Tile was not Initialized");
         return;
@@ -303,6 +305,7 @@ function moveBaseTileToEditor() {
     // Base tile size is default 16x16
     spriteEditorCanvas.width = 16 * scale;
     spriteEditorCanvas.height = 16 * scale;
+    setOverlayDimensions()
 
     EditorDrawOutput = BTctx.getImageData(0, 0, BTw, BTh);
     SPctx.putImageData(EditorDrawOutput, 0, 0);
@@ -310,6 +313,7 @@ function moveBaseTileToEditor() {
 
 document.getElementById('packedTileMoveIntoEditor').addEventListener("click", movePackedTileToEditor);
 function movePackedTileToEditor() {
+    overlayToggle = false;
     if (!PTctx) {
         alert("Error: The Packed Tile was not Initialized");
         return;
@@ -318,12 +322,14 @@ function movePackedTileToEditor() {
     // Packed tile size is default 16x24
     spriteEditorCanvas.width = 16 * scale;
     spriteEditorCanvas.height = 24 * scale;
+    setOverlayDimensions()
 
     EditorDrawOutput = PTctx.getImageData(0, 0, PTw, PTh);
     SPctx.putImageData(EditorDrawOutput, 0, 0);
 }
 document.getElementById('inCornersMoveIntoEditor').addEventListener("click", moveInCornerToEditor);
 function moveInCornerToEditor() {
+    overlayToggle = false;
     if (!ICctx) {
         alert("Error: The Inner Corners were not Initialized");
         return;
@@ -332,6 +338,7 @@ function moveInCornerToEditor() {
     // Packed tile size is default 16x24
     spriteEditorCanvas.width = 8 * scale;
     spriteEditorCanvas.height = 8 * scale;
+    setOverlayDimensions()
 
     EditorDrawOutput = ICctx.getImageData(0, 0, ICw, ICh);
     SPctx.putImageData(EditorDrawOutput, 0, 0);
@@ -350,7 +357,7 @@ function setSpriteCanvasMouseCoords(e) {
     EditorDrawOutput = SPctx.getImageData(0, 0, spriteEditorCanvas.width, spriteEditorCanvas.height);
 
     if (leftMouseClicked) {
-        if (e.ctrlKey)  {
+        if (e.ctrlKey) {
             let tmpcol = getPixelFromImageData(Math.floor(mouse.x), Math.floor(mouse.y), EditorDrawOutput);
             document.getElementById("colorSelector").value = rgbToHex(tmpcol[0], tmpcol[1], tmpcol[2]);
             return;
@@ -408,6 +415,28 @@ spriteEditorCanvas.addEventListener("mouseup", () => {
 })
 spriteEditorCanvas.width = 16;
 spriteEditorCanvas.height = 16;
+
+const spriteOverlayCanvas = document.getElementById("spriteOverlaySurface");
+const SOctx = spriteOverlayCanvas.getContext('2d');
+function setOverlayDimensions() {
+    spriteOverlayCanvas.width = spriteEditorCanvas.width;
+    spriteOverlayCanvas.height = spriteEditorCanvas.height;
+}
+setOverlayDimensions();
+let overlayToggle = false;
+function handlePackedOverlay() {
+    overlayToggle = !overlayToggle;
+    if (overlayToggle) {
+        if (spriteEditorMode == "packedtile") {
+            SOctx.drawImage(defaultTemplateImage, 0, 0);
+        } else {
+            alert("Only works in packed tile mode right now, sry");
+        }
+    } else {
+        SOctx.clearRect(0, 0, spriteEditorCanvas.width, spriteEditorCanvas.height);
+    }
+}
+
 let SPctx = spriteEditorCanvas.getContext('2d');
 let EditorDrawOutput;
 
@@ -510,22 +539,32 @@ function setUpICCanvasPT() {
     translateFromDictionary(PTtoICDictionary, PTctx, ICctx, scale);
 }
 
+const defaultTemplateImage = document.getElementById("defaultTemplate");
+defaultTemplateImage.style.visibility = "hidden";
 BTinit();
 ORinit();
 PTinit();
 ICinit();
-const defaultTemplateImage = document.getElementById("defaultTemplate");
-defaultTemplateImage.style.visibility = "hidden";
-PTctx.drawImage(defaultTemplateImage, 0, 0);
-setUpBTCanvasPT();
-setUpICCanvasPT();
-setUpORCanvasBT();
-setUpORCanvasPT();
+
+function loadTemplate() {
+    scale = 1;
+    BTinit();
+    ORinit();
+    PTinit();
+    ICinit();
+
+    PTctx.drawImage(defaultTemplateImage, 0, 0);
+    setUpBTCanvasPT();
+    setUpICCanvasPT();
+    setUpORCanvasBT();
+    setUpORCanvasPT();
+}
 
 spriteEditorMode = "packedtile";
 // Base tile size is default 16x16
 spriteEditorCanvas.width = 16 * scale;
 spriteEditorCanvas.height = 24 * scale;
+setOverlayDimensions()
 
 EditorDrawOutput = PTctx.getImageData(0, 0, PTw, PTh);
 SPctx.putImageData(EditorDrawOutput, 0, 0);
@@ -583,8 +622,8 @@ String.prototype.convertToRGB = function () {
 function componentToHex(c) {
     var hex = c.toString(16);
     return hex.length == 1 ? "0" + hex : hex;
-  }
-  
-  function rgbToHex(r, g, b) {
+}
+
+function rgbToHex(r, g, b) {
     return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-  }
+}
