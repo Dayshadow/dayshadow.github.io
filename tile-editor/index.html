@@ -97,6 +97,7 @@
             image-rendering: pixelated;
             transition-duration: 0.4s;
         }
+
         #spriteOverlaySurface {
             z-index: -20;
             /* position: absolute; */
@@ -106,10 +107,12 @@
             image-rendering: pixelated;
             opacity: 50%;
         }
+
         #spriteEditorSurface:hover {
             background-color: transparent;
             box-shadow: 0 0px 15px 20px rgba(255, 255, 255, 0.10);
         }
+
         .fancyButton {
             width: 60%;
             min-width: fit-content;
@@ -155,6 +158,11 @@
             background-color: white;
             color: rgb(20, 23, 27);
             box-shadow: 0 0px 15px 20px rgba(255, 255, 255, 0.24);
+        }
+        .connectivitySurface {
+            width: 80%;
+            border: 10px outset rgb(91, 117, 183);
+            image-rendering: pixelated;
         }
 
         #break {
@@ -226,6 +234,12 @@
                 <button id="packedTileMoveIntoEditor" class="fancyButton">Move Into Sprite Editor...</button>
             </div>
         </div>
+    </div>
+    <br>
+    <div id="previewContainer">
+        <p>Connectivity Example</p>
+        <br>
+        <canvas id="connectivityExample" class="connectivitySurface"></canvas>
     </div>
     <img src="defaulttemplate.png" id="defaultTemplate">
     <script src="main.js"></script>

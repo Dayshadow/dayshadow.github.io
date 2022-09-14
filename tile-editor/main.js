@@ -94,6 +94,31 @@ const ORtoICDictionary = {
         { src: [12, 12, 8, 8], dst: [0, 0] }
     ]
 }
+const connectivityCanvas = document.getElementById("connectivityExample");
+connectivityCanvas.width = 256;
+connectivityCanvas.height = 256;
+let CEctx = connectivityCanvas.getContext("2d");
+
+const inCornerCanvas = document.getElementById("inCorners");
+let ICctx;
+let ICw, ICh;
+
+const spriteEditorCanvas = document.getElementById("spriteEditorSurface");
+let spriteEditorMode = "unassigned";
+let SPctx = spriteEditorCanvas.getContext('2d');
+let EditorDrawOutput;
+
+const oRepresentationCanvas = document.getElementById("oRepresentation");
+let ORctx;
+let ORw, ORh;
+
+const BaseTileCanvas = document.getElementById("baseTile");
+let BTctx;
+let BTw, BTh;
+
+const packedTileCanvas = document.getElementById("packedTile");
+let PTctx;
+let PTw, PTh;
 
 let mouse = {
     x: 1,
@@ -180,6 +205,7 @@ const onLoadBTImage = () => {
     setUpORCanvasBT();
     setUpPTCanvasBT();
 
+    drawExample();
     moveBaseTileToEditor();
 }
 
@@ -230,6 +256,7 @@ const onLoadORImage = () => {
     setUpICCanvasOR();
 
     moveORToEditor();
+    drawExample();
 };
 document.getElementById('packedTileUpload').addEventListener("click", openPackedTileUpload)
 document.getElementById('packedTileUploadInput').addEventListener('change', handlePackedTileUpload, false);
@@ -274,6 +301,7 @@ const onLoadPTImage = () => {
     setUpICCanvasPT();
     setUpORCanvasPT();
 
+    drawExample();
     movePackedTileToEditor();
 };
 
@@ -378,7 +406,6 @@ function setSpriteCanvasMouseCoords(e) {
 }
 
 
-const spriteEditorCanvas = document.getElementById("spriteEditorSurface");
 spriteEditorCanvas.addEventListener("mousemove", setSpriteCanvasMouseCoords);
 window.addEventListener("mousedown", setSpriteCanvasMouseCoords);
 spriteEditorCanvas.addEventListener("mouseup", () => {
@@ -412,6 +439,7 @@ spriteEditorCanvas.addEventListener("mouseup", () => {
         default:
             break;
     }
+    drawExample();
 })
 spriteEditorCanvas.width = 16;
 spriteEditorCanvas.height = 16;
@@ -421,6 +449,9 @@ const SOctx = spriteOverlayCanvas.getContext('2d');
 function setOverlayDimensions() {
     spriteOverlayCanvas.width = spriteEditorCanvas.width;
     spriteOverlayCanvas.height = spriteEditorCanvas.height;
+
+    connectivityCanvas.width = 256 * scale;
+    connectivityCanvas.height = 256 * scale;
 }
 setOverlayDimensions();
 let overlayToggle = false;
@@ -437,15 +468,9 @@ function handlePackedOverlay() {
     }
 }
 
-let SPctx = spriteEditorCanvas.getContext('2d');
-let EditorDrawOutput;
-
-let spriteEditorMode = "unassigned";
 
 
-const oRepresentationCanvas = document.getElementById("oRepresentation");
-let ORctx;
-let ORw, ORh;
+
 
 function ORinit() {
     // allow for generic sizes in case you want to generate different sizes of tile sprites or whatever
@@ -463,9 +488,7 @@ function setUpORCanvasPT() {
     setUpORCanvasBT();;
     drawICToOR();
 }
-const BaseTileCanvas = document.getElementById("baseTile");
-let BTctx;
-let BTw, BTh;
+
 
 function BTinit() {
     // allow for generic sizes in case you want to generate different sizes of tile sprites or whatever
@@ -493,10 +516,6 @@ function setUpBTCanvasPT() {
     translateFromDictionary(PTtoBTDictionary, PTctx, BTctx, scale);
 }
 
-const packedTileCanvas = document.getElementById("packedTile");
-let PTctx;
-let PTw, PTh;
-
 function PTinit() {
     packedTileCanvas.width = PTw = 16 * scale;
     packedTileCanvas.height = PTh = 24 * scale;
@@ -517,10 +536,6 @@ function setUpPTCanvasPT() {
 function setUpPTCanvasOR() {
     translateFromDictionary(ORtoPTDictionary, ORctx, PTctx, scale);
 }
-
-const inCornerCanvas = document.getElementById("inCorners");
-let ICctx;
-let ICw, ICh;
 
 function ICinit() {
     inCornerCanvas.width = ICw = 8 * scale;
@@ -558,6 +573,8 @@ function loadTemplate() {
     setUpICCanvasPT();
     setUpORCanvasBT();
     setUpORCanvasPT();
+
+    drawExample();
 }
 
 spriteEditorMode = "packedtile";
@@ -577,6 +594,95 @@ function setUpORCanvasBT() {
     translateFromDictionary(BTtoORDictionary, BTctx, ORctx, scale);
 }
 
+
+
+// too lazy to write plus signs
+Array.prototype.relative2D = function (x, y, i, j) {
+    if (i + y < 0) return false;
+    if (i + y >= this.length) return false;
+    if (j + x < 0) return false;
+    if (j + x >= this[0].length) return false;
+    return this[i + y][j + x];
+};
+
+let tiles = [];
+
+let arrWidth = 20;
+let arrHeight = 20;
+for (let i = 0; i < arrHeight; i++) {
+    tiles.push([]);
+    for (let j = 0; j < arrWidth; j++) {
+        if (i == 0 || i == arrHeight - 1 || j == 0 || j == arrWidth - 1) {
+            tiles[i].push(false);
+            continue;
+        }
+        tiles[i].push(!Math.round(Math.random()));
+    }
+}
+
+function drawExample() {
+    for (let i = 0; i < tiles.length; i++) {
+        for (let j = 0; j < tiles[0].length; j++) {
+            let top = false, bottom = false, left = false, right = false, tl = false, tr = false, bl = false, br = false;
+            if (tiles.relative2D(0, -1, i, j)) top = true;
+            if (tiles.relative2D(0, 1, i, j)) bottom = true;
+            if (tiles.relative2D(-1, 0, i, j)) left = true;
+            if (tiles.relative2D(1, 0, i, j)) right = true;
+
+            if (tiles.relative2D(-1, -1, i, j)) tl = true;
+            if (tiles.relative2D(1, 1, i, j)) br = true;
+            if (tiles.relative2D(1, -1, i, j)) tr = true;
+            if (tiles.relative2D(-1, 1, i, j)) bl = true;
+
+            let x = j * 8 + 20;
+            let y = i * 8 + 20;
+            if (tiles[i][j]) {
+                CEctx.srcToDst(4, 12, 8, 8, x + 4, y + 4, PTctx, scale);
+            } else {
+                // no need to run for empty tiles
+                continue;
+            }
+            if (!(top || tr || right)) CEctx.srcToDst(12, 8, 4, 4, x + 12, y, PTctx, scale);
+            if (!right) CEctx.srcToDst(12, 12, 4, 8, x + 12, y + 4, PTctx, scale);
+            if (!(right || br || bottom)) CEctx.srcToDst(12, 20, 4, 4, x + 12, y + 12, PTctx, scale);
+            if (!bottom) CEctx.srcToDst(4, 20, 8, 4, x + 4, y + 12, PTctx, scale);
+            if (!(bottom || bl || left)) CEctx.srcToDst(0, 20, 4, 4, x, y + 12, PTctx, scale);
+            if (!left) CEctx.srcToDst(0, 12, 4, 8, x, y + 4, PTctx, scale);
+            if (!(left || tl || top)) CEctx.srcToDst(0, 8, 4, 4, x, y, PTctx, scale);
+            if (!top) CEctx.srcToDst(4, 8, 8, 4, x + 4, y, PTctx, scale);
+        }
+    }
+    // separate pass for incorners or else they get drawn over
+    for (let i = 0; i < tiles.length; i++) {
+        for (let j = 0; j < tiles[0].length; j++) {
+            let top = false, bottom = false, left = false, right = false, tl = false, tr = false, bl = false, br = false;
+            if (tiles.relative2D(0, -1, i, j)) top = true;
+            if (tiles.relative2D(0, 1, i, j)) bottom = true;
+            if (tiles.relative2D(-1, 0, i, j)) left = true;
+            if (tiles.relative2D(1, 0, i, j)) right = true;
+
+            if (tiles.relative2D(-1, -1, i, j)) tl = true;
+            if (tiles.relative2D(1, 1, i, j)) br = true;
+            if (tiles.relative2D(1, -1, i, j)) tr = true;
+            if (tiles.relative2D(-1, 1, i, j)) bl = true;
+            
+            let x = j * 8 + 20;
+            let y = i * 8 + 20;
+            if (top && right && !tr) CEctx.srcToDst(0, 4, 4, 4, x + 12, y, PTctx, scale);
+            if (right && bottom && !br) CEctx.srcToDst(0, 0, 4, 4, x + 12, y + 12, PTctx, scale);
+            if (bottom && left && !bl) CEctx.srcToDst(4, 0, 4, 4, x, y + 12, PTctx, scale);
+            if (left && top && !tl) CEctx.srcToDst(4, 4, 4, 4, x, y, PTctx, scale);
+
+
+        }
+    }
+}
+
+
+
+CanvasRenderingContext2D.prototype.srcToDst = function (x, y, w, h, x2, y2, src, globalScale) {
+    return this.putImageData(src.getImageData(x * globalScale, y * globalScale, w * globalScale, h * globalScale), x2 * globalScale, y2 * globalScale);
+}
 function translateFromDictionary(dictionary, srcCtx, dstCtx, globalScale) {
     let data = dictionary.srcDst;
     for (let e of data) {
