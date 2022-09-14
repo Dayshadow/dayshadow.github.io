@@ -131,6 +131,23 @@
             background-color: rgb(44, 77, 139);
         }
 
+        .fancyButton2 {
+            white-space: normal;
+            width: 40%;
+            padding: 0px;
+
+            transition-duration: 0.4s;
+
+            font-weight: bold;
+            font-size: 15px;
+
+            border-radius: 10px;
+            border: 3px solid rgb(44, 77, 139);
+
+            color: rgb(230, 236, 255);
+            background-color: rgb(44, 77, 139);
+        }
+
         .fancyColorSelector {
             width: 80px;
             height: 60px;
@@ -155,6 +172,11 @@
         }
 
         .fancyButton:hover {
+            background-color: white;
+            color: rgb(20, 23, 27);
+            box-shadow: 0 0px 15px 20px rgba(255, 255, 255, 0.24);
+        }
+        .fancyButton2:hover {
             background-color: white;
             color: rgb(20, 23, 27);
             box-shadow: 0 0px 15px 20px rgba(255, 255, 255, 0.24);
@@ -234,6 +256,14 @@
                 <br>
                 <button id="packedTileMoveIntoEditor" class="fancyButton">Move Into Sprite Editor...</button>
             </div>
+            <div id="previewContainer">
+                <p>Variations</p>
+                <br>
+                <canvas id="variationCanvas" class="previewCanvas"></canvas>
+                <br>
+                <button id="packedTileMoveIntoEditor" onclick="addVariation()" class="fancyButton2">Add Variation</button>
+                <button id="packedTileMoveIntoEditor" onclick="removeVariation()" class="fancyButton2">Remove Variation</button>
+            </div>
         </div>
     </div>
     <br>
@@ -243,16 +273,17 @@
         <canvas id="connectivityExample" class="connectivitySurface"></canvas>
     </div>
     <img src="defaulttemplate.png" id="defaultTemplate">
-    
+
     <script src="globals.js"></script>
     <script src="helperFuncs.js"></script>
     <script src="handlers.js"></script>
 
-    <script src="CNCanvas.js"></script>
     <script src="ICCanvas.js"></script>
     <script src="BTCanvas.js"></script>
     <script src="PTCanvas.js"></script>
     <script src="ORCanvas.js"></script>
+    <script src="VariationCanvas.js"></script>
+    <script src="CNCanvas.js"></script>
 
     <script src="SpriteEditor.js"></script>
     <script src="main.js"></script>
