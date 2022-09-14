@@ -104,7 +104,8 @@ spriteEditorCanvas.addEventListener("mouseup", () => {
         default:
             break;
     }
-    drawExample();
+    setVariation();
+    drawTiles();
 })
 
 function movePackedTileToEditor() {
@@ -118,7 +119,7 @@ function movePackedTileToEditor() {
     spriteEditorCanvas.width = SEw = 16 * globalScale;
     spriteEditorCanvas.height = SEh = 24 * globalScale;
     updateDimensions()
-    drawExample();
+    drawTiles();
 
     EditorDrawOutput = PTctx.getImageData(0, 0, PTw, PTh);
     SPctx.putImageData(EditorDrawOutput, 0, 0);
@@ -136,7 +137,7 @@ function moveInCornerToEditor() {
     spriteEditorCanvas.width = SEw = 8 * globalScale;
     spriteEditorCanvas.height = SEh = 8 * globalScale;
     updateDimensions()
-    drawExample();
+    drawTiles();
 
     EditorDrawOutput = ICctx.getImageData(0, 0, ICw, ICh);
     SPctx.putImageData(EditorDrawOutput, 0, 0);
@@ -154,7 +155,7 @@ function moveORToEditor() {
     spriteEditorCanvas.width = SEw = 32 * globalScale;
     spriteEditorCanvas.height = SEh = 32 * globalScale;
     updateDimensions()
-    drawExample();
+    drawTiles();
     
     // keep it up to date
     EditorDrawOutput = ORctx.getImageData(0, 0, ORw, ORh);
@@ -172,7 +173,7 @@ function moveBTToEditor() {
     spriteEditorCanvas.width = 16 * globalScale;
     spriteEditorCanvas.height = 16 * globalScale;
     updateDimensions()
-    drawExample();
+    drawTiles();
 
     EditorDrawOutput = BTctx.getImageData(0, 0, BTw, BTh);
     SPctx.putImageData(EditorDrawOutput, 0, 0);

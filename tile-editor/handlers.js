@@ -62,7 +62,8 @@ const onLoadBTImage = () => {
     setUpORCanvasBT();
     setUpPTCanvasBT();
 
-    drawExample();
+    setVariation();
+    drawTiles();
     moveBTToEditor();
 }
 
@@ -102,8 +103,9 @@ const onLoadORImage = () => {
     setUpPTCanvasOR();
     setUpICCanvasOR();
 
+    setVariation();
     moveORToEditor();
-    drawExample();
+    drawTiles();
 };
 
 function handlePTUpload(e) {
@@ -138,6 +140,7 @@ const onLoadPTImage = () => {
     setUpICCanvasPT();
     setUpORCanvasPT();
 
+    setVariation();
     movePackedTileToEditor();
-    drawExample();
+    drawTiles();
 };

@@ -36,7 +36,8 @@ function loadTemplate() {
     setUpORCanvasPT();
     movePackedTileToEditor();
 
-    drawExample();
+    setVariation();
+    drawTiles();
 }
 
 initCanvases();
@@ -70,7 +71,8 @@ tmpC.width = PTw;
 tmpC.height = PTh;
 let tmpCtx = tmpC.getContext('2d');
 
-function drawExample() {
+function drawTiles() {
+    CNctx.clearRect(0, 0, 256 * globalScale, 256 * globalScale)
     tmpC.width = PTw;
     tmpC.height = PTh;
     for (let i = 0; i < tiles.length; i++) {
@@ -90,19 +92,19 @@ function drawExample() {
             let x = j * 8;
             let y = i * 8;
             if (tiles[i][j]) {
-                CEctx.srcToDst(4, 12, 8, 8, x + 4, y + 4, tmpCtx, globalScale);
+                CNctx.srcToDst(4, 12, 8, 8, x + 4, y + 4, tmpCtx, globalScale);
             } else {
                 // no need to run for empty tiles
                 continue;
             }
-            if (!(top || tr || right)) CEctx.srcToDst(12, 8, 4, 4, x + 12, y, tmpCtx, globalScale);
-            if (!right) CEctx.srcToDst(12, 12, 4, 8, x + 12, y + 4, tmpCtx, globalScale);
-            if (!(right || br || bottom)) CEctx.srcToDst(12, 20, 4, 4, x + 12, y + 12, tmpCtx, globalScale);
-            if (!bottom) CEctx.srcToDst(4, 20, 8, 4, x + 4, y + 12, tmpCtx, globalScale);
-            if (!(bottom || bl || left)) CEctx.srcToDst(0, 20, 4, 4, x, y + 12, tmpCtx, globalScale);
-            if (!left) CEctx.srcToDst(0, 12, 4, 8, x, y + 4, tmpCtx, globalScale);
-            if (!(left || tl || top)) CEctx.srcToDst(0, 8, 4, 4, x, y, tmpCtx, globalScale);
-            if (!top) CEctx.srcToDst(4, 8, 8, 4, x + 4, y, tmpCtx, globalScale);
+            if (!(top || tr || right)) CNctx.srcToDst(12, 8, 4, 4, x + 12, y, tmpCtx, globalScale);
+            if (!right) CNctx.srcToDst(12, 12, 4, 8, x + 12, y + 4, tmpCtx, globalScale);
+            if (!(right || br || bottom)) CNctx.srcToDst(12, 20, 4, 4, x + 12, y + 12, tmpCtx, globalScale);
+            if (!bottom) CNctx.srcToDst(4, 20, 8, 4, x + 4, y + 12, tmpCtx, globalScale);
+            if (!(bottom || bl || left)) CNctx.srcToDst(0, 20, 4, 4, x, y + 12, tmpCtx, globalScale);
+            if (!left) CNctx.srcToDst(0, 12, 4, 8, x, y + 4, tmpCtx, globalScale);
+            if (!(left || tl || top)) CNctx.srcToDst(0, 8, 4, 4, x, y, tmpCtx, globalScale);
+            if (!top) CNctx.srcToDst(4, 8, 8, 4, x + 4, y, tmpCtx, globalScale);
         }
     }
     // separate pass for incorners or else they get drawn over
@@ -121,10 +123,10 @@ function drawExample() {
 
             let x = j * 8;
             let y = i * 8;
-            if (top && right && !tr) CEctx.srcToDst(0, 4, 4, 4, x + 12, y, tmpCtx, globalScale);
-            if (right && bottom && !br) CEctx.srcToDst(0, 0, 4, 4, x + 12, y + 12, tmpCtx, globalScale);
-            if (bottom && left && !bl) CEctx.srcToDst(4, 0, 4, 4, x, y + 12, tmpCtx, globalScale);
-            if (left && top && !tl) CEctx.srcToDst(4, 4, 4, 4, x, y, tmpCtx, globalScale);
+            if (top && right && !tr) CNctx.srcToDst(0, 4, 4, 4, x + 12, y, tmpCtx, globalScale);
+            if (right && bottom && !br) CNctx.srcToDst(0, 0, 4, 4, x + 12, y + 12, tmpCtx, globalScale);
+            if (bottom && left && !bl) CNctx.srcToDst(4, 0, 4, 4, x, y + 12, tmpCtx, globalScale);
+            if (left && top && !tl) CNctx.srcToDst(4, 4, 4, 4, x, y, tmpCtx, globalScale);
         }
     }
 }

@@ -108,6 +108,7 @@
             opacity: 50%;
         }
 
+
         #spriteEditorSurface:hover {
             background-color: transparent;
             box-shadow: 0 0px 15px 20px rgba(255, 255, 255, 0.10);
@@ -176,11 +177,13 @@
             color: rgb(20, 23, 27);
             box-shadow: 0 0px 15px 20px rgba(255, 255, 255, 0.24);
         }
+
         .fancyButton2:hover {
             background-color: white;
             color: rgb(20, 23, 27);
             box-shadow: 0 0px 15px 20px rgba(255, 255, 255, 0.24);
         }
+
         .connectivitySurface {
             width: 80%;
             border: 10px outset rgb(91, 117, 183);
@@ -190,6 +193,24 @@
         #break {
             width: 100%;
             height: 0;
+        }
+
+        .variationSurface {
+            z-index: 10;
+            position: absolute;
+            width: 20%;
+            background-color: transparent;
+            border: 10px outset rgb(91, 117, 183);
+            image-rendering: pixelated;
+        }
+
+        #variationCanvasOverlay {
+            z-index: -20;
+            width: 20vw;
+            background-color: transparent;
+            border: 10px outset rgb(91, 117, 183);
+            image-rendering: pixelated;
+            opacity: 30%;
         }
     </style>
 </head>
@@ -263,10 +284,16 @@
     <div id="previewContainer">
         <p>Variations</p>
         <br>
-        <canvas id="variationCanvas" class="previewCanvas"></canvas>
+        <canvas id="variationCanvas" class="variationSurface"></canvas>
+        <canvas id="variationCanvasOverlay"></canvas>
+
         <br>
-        <button id="packedTileMoveIntoEditor" onclick="addVariation()" class="fancyButton2">Add Variation</button>
-        <button id="packedTileMoveIntoEditor" onclick="removeVariation()" class="fancyButton2">Remove Variation</button>
+        <button onclick="previousVariation()" class="fancyButton2">&lt-</button>
+        <button onclick="nextVariation()" class="fancyButton2">-&gt</button>
+        <br>
+        <button onclick="removeVariation()" class="fancyButton2">Remove Variation</button>
+
+        <p id="vartext">Current variation in editor: 0</p>
     </div>
     <br>
     <div id="previewContainer">

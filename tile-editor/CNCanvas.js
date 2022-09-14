@@ -1,17 +1,19 @@
 
-const connectivityCanvas = document.getElementById("connectivityExample");
-connectivityCanvas.width = 256;
-connectivityCanvas.height = 256;
-let CEctx = connectivityCanvas.getContext("2d");
+const CNCanvas = document.getElementById("connectivityExample");
+
+CNCanvas.width = 256;
+CNCanvas.height = 256;
+let CNctx = CNCanvas.getContext("2d");
 
 function updateCNDimensions() {
-    connectivityCanvas.width = 256 * globalScale;
-    connectivityCanvas.height = 256 * globalScale;
+    CNCanvas.width = 256 * globalScale;
+    CNCanvas.height = 256 * globalScale;
+
 }
 
 
-connectivityCanvas.addEventListener("mousemove", setCNCanvasMouseCoords);
-connectivityCanvas.addEventListener("mousedown", setCNCanvasMouseCoords);
+CNCanvas.addEventListener("mousemove", setCNCanvasMouseCoords);
+CNCanvas.addEventListener("mousedown", setCNCanvasMouseCoords);
 
 let CNMousePosChanged = true;
 let CNStoredPos = { x: 0, y: 0 };
@@ -34,11 +36,11 @@ function handleTileDraw(e) {
     CNStoredPos.y = Math.floor(mouse.y / (8 * globalScale));
     if (leftMouseClicked) {
         tiles.setIndex2D(true, CNStoredPos.x, CNStoredPos.y)
-        drawExample();
+        drawTiles();
         return;
     }
     if (rightMouseClicked) {
         tiles.setIndex2D(false, CNStoredPos.x, CNStoredPos.y)
-        drawExample();
+        drawTiles();
     }
 }
