@@ -15,10 +15,13 @@
 
         }
 
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
         body {
             margin: 0;
             height: 100%;
-            overflow: hidden;
         }
 
         .container {
@@ -164,7 +167,7 @@
             <p>Sprite Editor</p>
             <canvas id="spriteEditorSurface" oncontextmenu="return false;"></canvas>
             <br>
-            <p style="display: inline; font-size: medium;">Color Picker  </p>
+            <p style="display: inline; font-size: medium;">Color Picker </p>
             <input type="color" id="colorSelector" class="fancyColorSelector">
         </div>
 
