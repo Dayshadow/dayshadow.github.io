@@ -31,7 +31,7 @@
             flex-direction: row;
             justify-content: center;
             align-items: center;
-            flex-wrap: wrap;
+            /* flex-wrap: wrap; */
         }
 
         .container2 {
@@ -133,7 +133,7 @@
 
         .fancyButton2 {
             white-space: normal;
-            width: 40%;
+            width: 10%;
             padding: 0px;
 
             transition-duration: 0.4s;
@@ -256,15 +256,17 @@
                 <br>
                 <button id="packedTileMoveIntoEditor" class="fancyButton">Move Into Sprite Editor...</button>
             </div>
-            <div id="previewContainer">
-                <p>Variations</p>
-                <br>
-                <canvas id="variationCanvas" class="previewCanvas"></canvas>
-                <br>
-                <button id="packedTileMoveIntoEditor" onclick="addVariation()" class="fancyButton2">Add Variation</button>
-                <button id="packedTileMoveIntoEditor" onclick="removeVariation()" class="fancyButton2">Remove Variation</button>
-            </div>
+
         </div>
+    </div>
+    <hr>
+    <div id="previewContainer">
+        <p>Variations</p>
+        <br>
+        <canvas id="variationCanvas" class="previewCanvas"></canvas>
+        <br>
+        <button id="packedTileMoveIntoEditor" onclick="addVariation()" class="fancyButton2">Add Variation</button>
+        <button id="packedTileMoveIntoEditor" onclick="removeVariation()" class="fancyButton2">Remove Variation</button>
     </div>
     <br>
     <div id="previewContainer">
