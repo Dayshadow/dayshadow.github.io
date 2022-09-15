@@ -17,6 +17,11 @@ document.getElementById('oRepresentationUploadInput').addEventListener('change',
 document.getElementById('packedTileUpload').addEventListener("click", () => document.getElementById('packedTileUploadInput').click())
 document.getElementById('packedTileUploadInput').addEventListener('change', handlePTUpload, false);
 
+// Link the fancy button to the hidden, real input
+document.getElementById('packedTileRowsUpload').addEventListener("click", () => document.getElementById('packedTileRowsUploadInput').click())
+document.getElementById('packedTileRowsUploadInput').addEventListener('change', handlePTRowsUpload, false);
+
+
 document.getElementById('baseTileMoveIntoEditor').addEventListener("click", moveBTToEditor);
 
 document.getElementById('packedTileMoveIntoEditor').addEventListener("click", movePackedTileToEditor);

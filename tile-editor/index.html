@@ -216,6 +216,7 @@
 </head>
 
 <body>
+    
     <div class="container">
         <div id="controls">
             <p style="margin: 0px;">Options</p>
@@ -231,8 +232,11 @@
             <input type="file" id="packedTileUploadInput" hidden />
             <button id="packedTileUpload" class="fancyButton">Upload Packed Tileset...</button>
             <br>
+            <input type="file" id="packedTileRowsUploadInput" hidden />
+            <button id="packedTileRowsUpload" class="fancyButton">Upload Packed Tileset Rows...</button>
             <br>
-            <button class="fancyButton" onclick="loadTemplate()">Load Packed Template...</button>
+            <br>
+            <button class="fancyButton" onclick="loadTemplate()">Insert Default Template</button>
             <button class="fancyButton" onclick="handlePackedOverlay()">Toggle Packed Overlay...</button>
 
             <hr color="lightblue">

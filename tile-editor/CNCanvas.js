@@ -21,8 +21,8 @@ let CNStoredPos = { x: 0, y: 0 };
 function setCNCanvasMouseCoords(e) {
     let rect = e.target.getBoundingClientRect();
     // mouse coordinates within the sprite editor window, with pixel transformations
-    let x = ((e.clientX - rect.left - 10) / e.target.clientWidth) * e.target.width;
-    let y = ((e.clientY - rect.top - 10) / e.target.clientHeight) * e.target.height;
+    let x = ((e.clientX - rect.left - 20) / e.target.clientWidth) * e.target.width;
+    let y = ((e.clientY - rect.top - 20) / e.target.clientHeight) * e.target.height;
     mouse.x = x;
     mouse.y = y;
 

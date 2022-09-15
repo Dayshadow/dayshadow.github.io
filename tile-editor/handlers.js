@@ -132,7 +132,54 @@ const onLoadPTImage = () => {
         alert("Image does not have the correct aspect ratio, and is not a multiple of 16x24. Results inaccurate.");
     }
     // the scale for the rest of the code, to make it generic. The normal size for the packed texture is 16x24
-    globalScale = packedTileImage.width / 16;
+    globalScale = packedTileImage.width / 24;
+    Vctx.drawImage(packedTileImage, 0, 0)
+
+    initCanvases()
+    // important that this is first
+    setUpPTCanvasPT();
+    setUpBTCanvasPT();
+    setUpICCanvasPT();
+    setUpORCanvasPT();
+
+    setVariation();
+    movePackedTileToEditor();
+    drawTiles();
+};
+
+
+
+function handlePTRowsUpload(e) {
+    if (document.getElementById('packedTileRowsUploadInput').value == "") return;
+    let reader = new FileReader;
+    let file = e.target.files[0];
+
+    reader.readAsDataURL(file);
+
+    reader.onload = function (e) {
+        // Reset the image variable
+        packedTileImage = new Image();
+
+        // image needs to load for a bit after setting the image url
+        packedTileImage.addEventListener('load', onLoadPTRowsImage);
+        packedTileImage.src = e.target.result
+        // allow the change function to work if user selects the same image again
+        document.getElementById('packedTileRowsUploadInput').value = "";
+    }
+}
+
+const onLoadPTRowsImage = () => {
+    // if ((packedTileImage.width * packedTileImage.height) % (16 * 24) != 0) {
+    //     alert("Image does not have the correct aspect ratio, and is not a multiple of 16x24. Results inaccurate.");
+    // }
+    // the scale for the rest of the code, to make it generic. The normal size for the packed texture is 16x24
+    globalScale = packedTileImage.width / (16 * 6);
+    let variationColumns = 6;
+    let variationRows = Math.floor(packedTileImage.height / (24 * globalScale));
+    variationCount = variationColumns * variationRows - 1;
+    resizeVariations();
+    Vctx.drawImage(packedTileImage, 0, 0)
+
     initCanvases()
     // important that this is first
     setUpPTCanvasPT();
