@@ -131,7 +131,6 @@ const onLoadPTImage = () => {
     }
     // the scale for the rest of the code, to make it generic. The normal size for the packed texture is 16x24
     globalScale = packedTileImage.width / 16;
-    Vctx.drawImage(packedTileImage, 0, 0)
 
     initCanvases()
     // important that this is first
