@@ -249,10 +249,18 @@
             <br>
             <p style="display: inline; font-size: medium;">Color Picker: </p>
             <input type="color" id="colorSelector" class="fancyColorSelector">
-            <p style="display: inline; font-size: medium;">Randomness: </p>
-            <input type="range" id="random">
-            <button class="fancyButton2" onclick="document.getElementById('random').value = '50'">Reset</button>
-            
+            <br>
+            <p style="display: inline; font-size: medium;">Darkness/Lightness: </p>
+            <input type="range" id="darkness" min="-128" max="128">
+            <button class="fancyButton2" onclick="document.getElementById('darkness').value = '0'">Reset</button>
+            <br>
+            <p style="display: inline; font-size: medium;">Darkness/Lightness variation: </p>
+            <input type="range" id="random" min="-128" max="128" value="0">
+            <button class="fancyButton2" onclick="document.getElementById('random').value = '0'">Reset</button>
+            <br>
+            <p style="display: inline; font-size: medium;">Hue offset: </p>
+            <input type="range" id="huev" min="-60" max="60" value="0">
+            <button class="fancyButton2" onclick="document.getElementById('huev').value = '0'">Reset</button>
         </div>
 
         <div class="container2">

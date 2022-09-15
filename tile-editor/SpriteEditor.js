@@ -61,12 +61,12 @@ function handleEditorDraw(e) {
         }
 
         if (spriteEditorMode == "unassigned") return;
-        let col = document.getElementById("colorSelector").value.convertToRGB();
+        let col = changeHue(document.getElementById("colorSelector").value, +document.getElementById('huev').value).convertToRGB();
         col[3] = 255;
-        let randVal = Math.round(((Number(document.getElementById("random").value) / 50) - 1) * 255) * Math.random();
-        col[0] = (col[0] + randVal).clamp(0, 255);
-        col[1] = (col[1] + randVal).clamp(0, 255);
-        col[2] = (col[2] + randVal).clamp(0, 255);
+        let darknesslightness = Math.round(+document.getElementById('darkness').value + ((Number(document.getElementById("random").value)) * Math.random()));
+        col[0] = (col[0] + darknesslightness).clamp(0, 255);
+        col[1] = (col[1] + darknesslightness).clamp(0, 255);
+        col[2] = (col[2] + darknesslightness).clamp(0, 255);
 
         setPixelInImageData(Math.floor(mouse.x), Math.floor(mouse.y), col, EditorDrawOutput);
         SPctx.putImageData(EditorDrawOutput, 0, 0);
