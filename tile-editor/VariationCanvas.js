@@ -69,6 +69,19 @@ function previousVariation() {
     setUpICCanvasPT();
     setUpORCanvasPT();
 }
+
+function copyPrevious() {
+    let previous = (currentVariation - 1).clamp(0, 999999)
+    Vctx.putImageData(getVariation(previous), (currentVariation % 6) * 16 * globalScale, Math.floor(currentVariation / 6) * 24 * globalScale)
+    PTctx.putImageData(getCurrentVariation(), 0, 0);
+
+    EditorDrawOutput = PTctx.getImageData(0, 0, PTw, PTh);
+    SPctx.putImageData(EditorDrawOutput, 0, 0);
+
+    setUpBTCanvasPT();
+    setUpICCanvasPT();
+    setUpORCanvasPT();
+}
 function setVariation() {
     Vctx.srcToDst(0, 0, PTw, PTh, (currentVariation % 6) * 16, Math.floor(currentVariation / 6) * 24, PTctx, globalScale);
 
