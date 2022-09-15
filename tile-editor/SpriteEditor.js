@@ -63,6 +63,11 @@ function handleEditorDraw(e) {
         if (spriteEditorMode == "unassigned") return;
         let col = document.getElementById("colorSelector").value.convertToRGB();
         col[3] = 255;
+        let randVal = Math.round(((Number(document.getElementById("random").value) / 50) - 1) * 255) * Math.random();
+        col[0] = (col[0] + randVal).clamp(0, 255);
+        col[1] = (col[1] + randVal).clamp(0, 255);
+        col[2] = (col[2] + randVal).clamp(0, 255);
+
         setPixelInImageData(Math.floor(mouse.x), Math.floor(mouse.y), col, EditorDrawOutput);
         SPctx.putImageData(EditorDrawOutput, 0, 0);
     }

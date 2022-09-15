@@ -10,7 +10,6 @@ function handleKeyPress(e) {
 function handleMouseDown(e) {
     //e.button describes the mouse button that was clicked
     // 0 is left, 1 is middle, 2 is right
-    e.preventDefault();
     if (e.button === 2) {
         rightMouseClicked = true;
     }
@@ -19,7 +18,6 @@ function handleMouseDown(e) {
     }
 }
 function handleMouseUp(e) {
-    e.preventDefault();
     if (e.button === 2) {
         rightMouseClicked = false;
     }
@@ -132,7 +130,7 @@ const onLoadPTImage = () => {
         alert("Image does not have the correct aspect ratio, and is not a multiple of 16x24. Results inaccurate.");
     }
     // the scale for the rest of the code, to make it generic. The normal size for the packed texture is 16x24
-    globalScale = packedTileImage.width / 24;
+    globalScale = packedTileImage.width / 16;
     Vctx.drawImage(packedTileImage, 0, 0)
 
     initCanvases()

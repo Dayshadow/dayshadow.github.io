@@ -67,3 +67,6 @@ Array.prototype.setIndex2D = function(val, x, y) {
     if (x >= this[0].length) return;
     this[y][x] = val;
 }
+Number.prototype.clamp = function (min, max) {
+    return Math.min(Math.max(this, min), max);
+};

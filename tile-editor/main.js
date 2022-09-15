@@ -1,8 +1,8 @@
-window.addEventListener('keypress', handleKeyPress);
-window.addEventListener('keyup', handleKeyUp);
+document.addEventListener('keypress', handleKeyPress);
+document.addEventListener('keyup', handleKeyUp);
 
-window.addEventListener('mousedown', handleMouseDown);
-window.addEventListener('mouseup', handleMouseUp);
+document.addEventListener('mousedown', handleMouseDown);
+document.addEventListener('mouseup', handleMouseUp);
 
 // Link the fancy button to the hidden, real input
 document.getElementById('baseTileUpload').addEventListener("click", () => document.getElementById('baseTileUploadInput').click());
