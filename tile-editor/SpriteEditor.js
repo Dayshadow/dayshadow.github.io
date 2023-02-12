@@ -40,6 +40,7 @@ spriteEditorCanvas.addEventListener("mousemove", setSpriteCanvasMouseCoords);
 window.addEventListener("mousedown", setSpriteCanvasMouseCoords);
 
 function setSpriteCanvasMouseCoords(e) {
+    if (!(e.target.id == "spriteEditorSurface")) return;
     let rect = e.target.getBoundingClientRect();
     // mouse coordinates within the sprite editor window, with pixel transformations
     let x = ((e.clientX - rect.left - 10) / e.target.clientWidth) * e.target.width;
